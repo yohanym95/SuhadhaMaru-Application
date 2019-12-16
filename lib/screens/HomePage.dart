@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/main.dart';
+import 'package:suhadhamaru/screens/LoginHome.dart';
 import 'package:suhadhamaru/screens/login.dart';
 import 'package:suhadhamaru/widgets/HomeLists.dart';
 
@@ -20,18 +22,6 @@ class HomePageState extends State<HomePage> {
   initState() {
     // TODO: implement initState
     super.initState();
-
-    Auth().getCurrentUser().then((user) {
-      if (user == null) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => MyHomePage()),
-          (Route<dynamic> route) => false,
-        );
-      } else {
-        userId = user.uid;
-      }
-    });
   }
 
   @override
@@ -41,19 +31,23 @@ class HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('සුහඳ මාරු'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            tooltip: "Logout",
-            onPressed: () async {
-              Auth().signOut().then((onValue) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyHomePage()),
-                  (Route<dynamic> route) => false,
-                );
-              });
-            },
-          ),
+          Container(
+            margin: EdgeInsets.only(right: 8,top: 13,bottom: 13),
+            padding: EdgeInsets.all(3),
+            child: FlatButton(
+              color: Colors.pink[100],
+              child: Text('LOGOUT'),
+              onPressed: () {
+                Auth().signOut().then((onValue) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                    (Route<dynamic> route) => false,
+                  );
+                });
+              },
+            ),
+          )
         ],
         backgroundColor: Colors.pink[300],
       ),

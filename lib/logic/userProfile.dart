@@ -10,39 +10,37 @@ class UserManagement {
         .child(userId)
         .set(userData)
         .then((onValue) {
-          
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
         (Route<dynamic> route) => false,
       );
-      return true;
+      return false;
     }).catchError((onError) {
-      return true;
+      return false;
     });
 
-    return true;
+    return false;
   }
 
-
-  Future<bool> addPost(postData, postcategory,userId, context) async {
+  Future<bool> addPost(postData, postcategory, context) async {
     FirebaseDatabase.instance
         .reference()
-        .child('Posts').child(postcategory)
-        .child(userId)
+        .child('Posts')
+        .child(postcategory)
+        .push()
         .set(postData)
         .then((onValue) {
-          
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
         (Route<dynamic> route) => false,
       );
-      return true;
+      return false;
     }).catchError((onError) {
-      return true;
+      return false;
     });
 
-    return true;
+    return false;
   }
 }

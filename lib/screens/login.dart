@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 
@@ -66,8 +68,8 @@ class LoginState extends State<Login> {
                           controller: _password,
                           obscureText: true,
                           //style: textStyle,
-                          validator: (value){
-                            if(value.isEmpty){
+                          validator: (value) {
+                            if (value.isEmpty) {
                               return 'Enter Your Password';
                             }
                             return null;
@@ -109,7 +111,10 @@ class LoginState extends State<Login> {
                           Auth()
                               .signIn(_email.text, _password.text)
                               .then((onValue) {
-                            setState(() {
+                            setState(() async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.setString('email', _email.text);
                               _isLoading = false;
                               Navigator.pushAndRemoveUntil(
                                 context,
@@ -128,7 +133,8 @@ class LoginState extends State<Login> {
                     child: Center(
                         child: Text(
                       'Login With',
-                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     )),
                   ),
                   Container(
@@ -155,12 +161,12 @@ class LoginState extends State<Login> {
                       color: Colors.blueAccent,
                     ),
                   ),
-
                   Container(
                     child: Center(
                         child: Text(
                       'OR',
-                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     )),
                   ),
                   Container(

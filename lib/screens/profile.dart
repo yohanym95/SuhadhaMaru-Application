@@ -5,6 +5,7 @@ import 'package:suhadhamaru/logic/userProfile.dart';
 import 'package:suhadhamaru/main.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/logic/auth.dart';
+import 'package:suhadhamaru/screens/LoginHome.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -38,18 +39,18 @@ class ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
 
-    Auth().getCurrentUser().then((user) {
-      if (user == null) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => MyHomePage()),
-          (Route<dynamic> route) => false,
-        );
-      } else {
-        userId = user.uid;
-        email = user.email;
-      }
-    });
+    // Auth().getCurrentUser().then((user) {
+    //   if (user == null) {
+    //     Navigator.pushAndRemoveUntil(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => MyHomePage()),
+    //       (Route<dynamic> route) => false,
+    //     );
+    //   } else {
+    //     userId = user.uid;
+    //     email = user.email;
+    //   }
+    // });
   }
 
   @override
@@ -226,11 +227,15 @@ class ProfileState extends State<Profile> {
                             'lastName': _lastname.text,
                             'email': email,
                             'category': this.currencyValue,
-                            'currentCity': _currencity.text
+                            'currentCity': _currencity.text,
                           }, userId, context).then((onValue) {
-                            _isLoading = onValue;
+                            setState(() {
+                              _isLoading = onValue;
+                            });
                           }).catchError((onError) {
-                            _isLoading = true;
+                            setState(() {
+                              _isLoading = true;
+                            });
                           });
                         }
                       },

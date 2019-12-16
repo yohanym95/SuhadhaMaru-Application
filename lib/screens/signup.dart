@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/profile.dart';
 
@@ -109,13 +110,17 @@ class SignUpState extends State<SignUp> {
                         Auth()
                             .signUp(_email.text, _password.text)
                             .then((result) {
-                          setState(() {
+                          setState(() async {
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.setString('email', _email.text);
                             _isLoading = false;
-                           Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => Profile()),
-                            (Route<dynamic> route) => false,
-                          ); 
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Profile()),
+                              (Route<dynamic> route) => false,
+                            );
                           });
                         });
                       }
