@@ -112,9 +112,9 @@ class LoginState extends State<Login> {
                               .signIn(_email.text, _password.text)
                               .then((onValue) {
                             setState(() async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              prefs.setString('email', _email.text);
+                              // SharedPreferences prefs =
+                              //     await SharedPreferences.getInstance();
+                              // prefs.setString('email', _email.text);
                               _isLoading = false;
                               Navigator.pushAndRemoveUntil(
                                 context,
@@ -130,73 +130,124 @@ class LoginState extends State<Login> {
                     ),
                   ),
                   Container(
-                    child: Center(
-                        child: Text(
-                      'Login With',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    )),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10, right: 10, top: 5),
-                    width: double.infinity,
-                    child: MaterialButton(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8, bottom: 8, left: 10, right: 10),
-                        child: Text(
-                          'Login with Facebook',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
-                      },
-                      color: Colors.blueAccent,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                          child: Text(
+                        'Login With',
+                        style:
+                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      )),
                     ),
                   ),
+                  _facebookSignInButton(),
                   Container(
-                    child: Center(
-                        child: Text(
-                      'OR',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    )),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10, right: 10, top: 5),
-                    width: double.infinity,
-                    child: MaterialButton(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8, bottom: 8, left: 10, right: 10),
-                        child: Text(
-                          'Login with Google',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
-                      },
-                      color: Colors.white24,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                          child: Text(
+                        'OR',
+                        style:
+                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      )),
                     ),
                   ),
+                  _signInButton()
                 ],
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _signInButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      onPressed: () {
+        setState(() {
+          _isLoading = true;
+        });
+        Auth().signInWithGoogle().whenComplete(() {
+          setState(() {
+            _isLoading= false;
+          });
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (Route<dynamic> route) => false,
+          );
+        });
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("assests/google_logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  Widget _facebookSignInButton() {
+    return OutlineButton(
+      color: Colors.blue,
+      splashColor: Colors.blue,
+      onPressed: () {
+        setState(() {
+          _isLoading = true;
+        });
+        Auth().handleSignIn().whenComplete(() {
+          setState(() {
+            _isLoading= false;
+          });
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (Route<dynamic> route) => false,
+          );
+        });
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.blue),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("assests/Facebook_Logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Facebook',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
