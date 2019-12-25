@@ -16,13 +16,9 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  String userId;
-
-  @override
-  initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+  String url = imageUrl;
+  String name1 = name;
+  String email1 = email;
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +28,13 @@ class HomePageState extends State<HomePage> {
         title: Text('සුහඳ මාරු'),
         actions: <Widget>[
           Container(
-            margin: EdgeInsets.only(right: 8,top: 13,bottom: 13),
+            margin: EdgeInsets.only(right: 8, top: 13, bottom: 13),
             padding: EdgeInsets.all(3),
             child: FlatButton(
               color: Colors.pink[100],
               child: Text('LOGOUT'),
               onPressed: () {
-                Auth().signOut().then((onValue) {
+                signOut().then((onValue) {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => MyHomePage()),
@@ -55,8 +51,8 @@ class HomePageState extends State<HomePage> {
         child: ListView(
           children: <Widget>[
             new UserAccountsDrawerHeader(
-              accountName: Text("Yohan Malshika"),
-              accountEmail: Text("Birthday Finder"),
+              accountName: Text("$name1"),
+              accountEmail: Text("$email1"),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
               ),

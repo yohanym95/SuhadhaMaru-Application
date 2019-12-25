@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suhadhamaru/logic/auth.dart';
-import 'package:suhadhamaru/screens/profile.dart';
+import 'package:suhadhamaru/screens/createProfile.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -107,13 +107,9 @@ class SignUpState extends State<SignUp> {
                         setState(() {
                           _isLoading = true;
                         });
-                        Auth()
-                            .signUp(_email.text, _password.text)
-                            .then((result) {
+                        signUp(_email.text, _password.text).then((result) {
                           setState(() async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setString('email', _email.text);
+                            
                             _isLoading = false;
                             Navigator.pushAndRemoveUntil(
                               context,

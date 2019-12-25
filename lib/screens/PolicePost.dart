@@ -22,32 +22,30 @@ class PolicePostState extends State<PolicePost> {
     // TODO: implement initState
     super.initState();
 
-   DatabaseReference database =
-            FirebaseDatabase.instance.reference().child("Posts").child('Police');
-        database.once().then((DataSnapshot data) {
-          var keys = data.value.keys;
-          var Data1 = data.value;
+    DatabaseReference database =
+        FirebaseDatabase.instance.reference().child("Posts").child('Police');
+    database.once().then((DataSnapshot data) {
+      var keys = data.value.keys;
+      var Data1 = data.value;
 
-          postList.clear();
+      postList.clear();
 
-          for (var individualKey in keys) {
-            Posts posts = new Posts(
-                Data1[individualKey]['title'],
-                Data1[individualKey]['Post'],
-                Data1[individualKey]['date'],
-                Data1[individualKey]['confirm']);
+      for (var individualKey in keys) {
+        Posts posts = new Posts(
+            Data1[individualKey]['title'],
+            Data1[individualKey]['Post'],
+            Data1[individualKey]['date'],
+            Data1[individualKey]['confirm']);
 
-             if(Data1[individualKey]['confirm'] == "Yes"){
-               postList.add(posts);
-             } 
+        if (Data1[individualKey]['confirm'] == "Yes") {
+          postList.add(posts);
+        }
+      }
 
-            
-          }
-
-          setState(() {
-            print(postList.length);
-          });
-        });
+      setState(() {
+        print(postList.length);
+      });
+    });
   }
 
   @override
@@ -72,7 +70,8 @@ class PolicePostState extends State<PolicePost> {
             : new ListView.builder(
                 itemCount: postList.length,
                 itemBuilder: (_, index) {
-                    return postsUI(postList[index].title, postList[index].post, postList[index].date);
+                  return postsUI(postList[index].title, postList[index].post,
+                      postList[index].date);
                 },
               ),
       )),
@@ -89,7 +88,7 @@ class PolicePostState extends State<PolicePost> {
     );
   }
 
-  Widget postsUI(String title,String description,String date){
+  Widget postsUI(String title, String description, String date) {
     return new Card(
       elevation: 10.0,
       margin: EdgeInsets.all(10.0),
@@ -98,13 +97,16 @@ class PolicePostState extends State<PolicePost> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Text(title,style: Theme.of(context).textTheme.title,textAlign: TextAlign.center,),
-             new Text(date,style: Theme.of(context).textTheme.subtitle),
-              new Text(description,style: Theme.of(context).textTheme.subtitle)
+            new Text(
+              title,
+              style: Theme.of(context).textTheme.title,
+              textAlign: TextAlign.center,
+            ),
+            new Text(date, style: Theme.of(context).textTheme.subtitle),
+            new Text(description, style: Theme.of(context).textTheme.subtitle)
           ],
         ),
       ),
     );
-
   }
 }

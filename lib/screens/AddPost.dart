@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:suhadhamaru/logic/PostDetails.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/logic/userProfile.dart';
 import 'package:suhadhamaru/main.dart';
@@ -200,7 +201,7 @@ class PostState extends State<Post> {
       'confirm':'No'
     };
 
-    return UserManagement()
+    return PostDetails()
         .addPost(post, this.currencyValue, context)
         .then((onValue) {
       setState(() {

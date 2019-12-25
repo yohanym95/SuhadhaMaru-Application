@@ -2,13 +2,14 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
 
-class UserManagement {
-  Future<bool> addData(userData, userId, context) async {
+class PostDetails{
+  Future<bool> addPost(postData, postcategory, context) async {
     FirebaseDatabase.instance
         .reference()
-        .child('Users')
-        .child(userId)
-        .set(userData)
+        .child('Posts')
+        .child(postcategory)
+        .push()
+        .set(postData)
         .then((onValue) {
       Navigator.pushAndRemoveUntil(
         context,
@@ -22,6 +23,4 @@ class UserManagement {
 
     return false;
   }
-
-  
 }

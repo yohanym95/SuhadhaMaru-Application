@@ -24,17 +24,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // void signedIn() {
-  //   Auth().getCurrentUser().then((user) {
-  //     if (user != null) {
-  //       setState(() {
-  //         Navigator.pushAndRemoveUntil(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => HomePage()),
-  //         (Route<dynamic> route) => false,
-  //       );
-  //       });
-  //     } 
-  //   });
+    // Auth().getCurrentUser().then((user) {
+    //   if (user != null) {
+    //     setState(() {
+    //       Navigator.pushAndRemoveUntil(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => HomePage()),
+    //       (Route<dynamic> route) => false,
+    //     );
+    //     });
+    //   } 
+    // });
   // }
 
   @override

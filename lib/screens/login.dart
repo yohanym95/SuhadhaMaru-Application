@@ -1,9 +1,12 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:suhadhamaru/logic/SharedPreferenceHelper.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/logic/auth.dart';
+import 'package:suhadhamaru/screens/createProfile.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -18,6 +21,62 @@ class LoginState extends State<Login> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   bool _isLoading = false;
+
+  check() {
+    DatabaseReference database =
+        FirebaseDatabase.instance.reference().child('Users');
+
+    signInWithGoogle().then((onValue) {
+      String uid = userId;
+      if(uid == null){
+        print('login uid :$uid');
+      }
+
+      database.once().then((DataSnapshot data) {
+        
+        var Data1 = data.value.keys;
+        
+        print(Data1);
+
+        for (var key in Data1) {
+          if (key == uid) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+              (Route<dynamic> route) => false,
+            );
+            // setState(() async {
+            //   _isLoading = false;
+            // });
+            print('homepage');
+            break;
+          } else {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => Profile()),
+              (Route<dynamic> route) => false,
+            );
+            // setState(() async {
+            //   _isLoading = false;
+            // });
+            print('profile');
+          }
+        }
+      });
+    }).catchError((onError) {
+      // setState(() async {
+      //   _isLoading = false;
+      //   print('error');
+      // });
+      print('error');
+      print(onError.toString());
+    });
+
+    // setState(() {
+    //   print(postList.length);
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -108,22 +167,6 @@ class LoginState extends State<Login> {
                           setState(() {
                             _isLoading = true;
                           });
-                          Auth()
-                              .signIn(_email.text, _password.text)
-                              .then((onValue) {
-                            setState(() async {
-                              // SharedPreferences prefs =
-                              //     await SharedPreferences.getInstance();
-                              // prefs.setString('email', _email.text);
-                              _isLoading = false;
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()),
-                                (Route<dynamic> route) => false,
-                              );
-                            });
-                          });
                         }
                       },
                       color: Colors.pink[300],
@@ -135,8 +178,8 @@ class LoginState extends State<Login> {
                       child: Center(
                           child: Text(
                         'Login With',
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       )),
                     ),
                   ),
@@ -147,8 +190,8 @@ class LoginState extends State<Login> {
                       child: Center(
                           child: Text(
                         'OR',
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       )),
                     ),
                   ),
@@ -169,16 +212,17 @@ class LoginState extends State<Login> {
         setState(() {
           _isLoading = true;
         });
-        Auth().signInWithGoogle().whenComplete(() {
-          setState(() {
-            _isLoading= false;
-          });
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-            (Route<dynamic> route) => false,
-          );
-        });
+        check();
+        // signInWithGoogle().whenComplete(() {
+        //   setState(() {
+        //     _isLoading = false;
+        //   });
+        //   Navigator.pushAndRemoveUntil(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => Profile()),
+        //     (Route<dynamic> route) => false,
+        //   );
+        // });
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
@@ -206,7 +250,6 @@ class LoginState extends State<Login> {
     );
   }
 
-
   Widget _facebookSignInButton() {
     return OutlineButton(
       color: Colors.blue,
@@ -215,9 +258,9 @@ class LoginState extends State<Login> {
         setState(() {
           _isLoading = true;
         });
-        Auth().handleSignIn().whenComplete(() {
+        handleSignIn().whenComplete(() {
           setState(() {
-            _isLoading= false;
+            _isLoading = false;
           });
           Navigator.pushAndRemoveUntil(
             context,
@@ -232,7 +275,6 @@ class LoginState extends State<Login> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
-          
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
