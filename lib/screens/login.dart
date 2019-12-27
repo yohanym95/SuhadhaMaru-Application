@@ -28,6 +28,7 @@ class LoginState extends State<Login> {
 
     signInWithGoogle().then((onValue) {
       String uid = userId;
+      
       if(uid == null){
         print('login uid :$uid');
       }
@@ -213,16 +214,6 @@ class LoginState extends State<Login> {
           _isLoading = true;
         });
         check();
-        // signInWithGoogle().whenComplete(() {
-        //   setState(() {
-        //     _isLoading = false;
-        //   });
-        //   Navigator.pushAndRemoveUntil(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => Profile()),
-        //     (Route<dynamic> route) => false,
-        //   );
-        // });
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,

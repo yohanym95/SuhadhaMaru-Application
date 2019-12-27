@@ -12,8 +12,6 @@ void main() {
   runApp(MyApp());
 }
 
-
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.pink,
       ),
       home: LandingPage(),
     );
@@ -37,7 +35,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class LandingPageState extends State<LandingPage> {
-  
   FirebaseAuth mAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -110,7 +107,6 @@ class LandingPageState extends State<LandingPage> {
           );
           print('homepage');
           break;
-
         } else {
           Navigator.pushAndRemoveUntil(
             context,

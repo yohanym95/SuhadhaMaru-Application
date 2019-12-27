@@ -64,6 +64,7 @@ Future<FirebaseUser> signInWithGoogle() async {
   name = user.displayName;
   email = user.email;
   imageUrl = user.photoUrl;
+  userId = user.uid;
 
   // Only taking the first part of the name, i.e., First Name
   // if (name.contains(" ")) {
