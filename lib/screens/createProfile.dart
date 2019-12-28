@@ -240,10 +240,11 @@ class ProfileState extends State<Profile> {
                   print(_currencity.text);
 
                   UserManagement().addData({
-                    'firstName': _firstname.text,
+                    'fullName': _firstname.text,
                     'email': _email.text,
                     'category': this.currencyValue,
                     'currentCity': _currencity.text,
+                    'photoUrl': url
                   }, userId1, context).then((onValue) {
                     setState(() {
                       _isLoading = onValue;

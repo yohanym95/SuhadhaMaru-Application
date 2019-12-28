@@ -1,15 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suhadhamaru/logic/auth.dart';
-import 'package:suhadhamaru/main.dart';
 import 'package:suhadhamaru/model/Post.dart';
 import 'package:suhadhamaru/screens/LoginHome.dart';
 import 'package:suhadhamaru/screens/PolicePost.dart';
-import 'package:suhadhamaru/screens/login.dart';
-import 'package:suhadhamaru/widgets/HomeLists.dart';
+import 'package:suhadhamaru/screens/Profile.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -33,7 +30,6 @@ class HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     getPolicePost();
-    
   }
 
   @override
@@ -68,14 +64,22 @@ class HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            new UserAccountsDrawerHeader(
-                accountName: Text("$name1"),
-                accountEmail: Text("$email1"),
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage(url),
-                  radius: 60,
-                  backgroundColor: Colors.transparent,
-                )),
+            GestureDetector(
+              child: new UserAccountsDrawerHeader(
+                  accountName: Text("$name1"),
+                  accountEmail: Text("$email1"),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundImage: NetworkImage(url),
+                    radius: 60,
+                    backgroundColor: Colors.transparent,
+                  )),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+              },
+            ),
             new ListTile(
               title: Text("Page one"),
               trailing: Icon(Icons.arrow_upward),
@@ -322,8 +326,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-
-  Future getPolicePost()async{
+  Future getPolicePost() async {
     DatabaseReference database =
         FirebaseDatabase.instance.reference().child("Posts").child('Police');
     database.once().then((DataSnapshot data) {
@@ -345,9 +348,9 @@ class HomePageState extends State<HomePage> {
       }
 
       setState(() {
-        if(postList.length >= 3){
+        if (postList.length >= 3) {
           policeLength = 3;
-        }else {
+        } else {
           policeLength = postList.length;
         }
         print(policeLength);
