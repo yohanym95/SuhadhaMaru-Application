@@ -7,6 +7,7 @@ import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/screens/LoginHome.dart';
 import 'package:suhadhamaru/screens/createProfile.dart';
+import 'package:suhadhamaru/widgets/loader.dart';
 
 void main() {
   runApp(MyApp());
@@ -58,11 +59,7 @@ class LandingPageState extends State<LandingPage> {
             //   );
             // }
           }
-          return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return Loader();
         } else {
           return Scaffold(
             body: Center(
