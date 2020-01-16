@@ -1,13 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:suhadhamaru/logic/SharedPreferenceHelper.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/createProfile.dart';
-import 'package:suhadhamaru/widgets/loader.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -29,15 +26,14 @@ class LoginState extends State<Login> {
 
     signInWithGoogle().then((onValue) {
       String uid = userId;
-      
-      if(uid == null){
+
+      if (uid == null) {
         print('login uid :$uid');
       }
 
       database.once().then((DataSnapshot data) {
-        
         var Data1 = data.value.keys;
-        
+
         print(Data1);
 
         for (var key in Data1) {
@@ -50,7 +46,7 @@ class LoginState extends State<Login> {
               MaterialPageRoute(builder: (context) => HomePage()),
               (Route<dynamic> route) => false,
             );
-            
+
             print('homepage');
             break;
           } else {
@@ -62,7 +58,7 @@ class LoginState extends State<Login> {
               MaterialPageRoute(builder: (context) => Profile()),
               (Route<dynamic> route) => false,
             );
-            
+
             print('profile');
           }
         }
@@ -86,119 +82,126 @@ class LoginState extends State<Login> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
-        backgroundColor: Colors.pink[300],
+        title: Text('Login',style: TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.purple[300],
       ),
-      body: _isLoading ? Loader() : SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(5),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  margin:
-                      EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 5),
-                  child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 15.0, bottom: 5.0, left: 5, right: 5),
-                      child: TextFormField(
-                        controller: _email,
-                        //style: textStyle,
-                        validator: validateEmail1,
-                        decoration: InputDecoration(
-                            labelText: 'Email',
-                            focusColor: Colors.pink,
-                            labelStyle: TextStyle(
-                                fontSize: 18.0, color: Colors.black),
-                            prefixIcon: Icon(Icons.person),
-                            errorStyle: TextStyle(
-                                color: Colors.redAccent, fontSize: 15.0),
-                            hintText: "Email",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            )),
-                      )),
-                ),
-                Container(
-                  margin: EdgeInsets.all(5),
-                  child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 5.0, bottom: 5.0, left: 5, right: 5),
-                      child: TextFormField(
-                        controller: _password,
-                        obscureText: true,
-                        //style: textStyle,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Enter Your Password';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                            labelText: 'Password',
-                            focusColor: Colors.pink,
-                            labelStyle: TextStyle(
-                                fontSize: 18.0, color: Colors.black),
-                            prefixIcon: Icon(Icons.person),
-                            errorStyle: TextStyle(
-                                color: Colors.redAccent, fontSize: 15.0),
-                            hintText: "Password",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            )),
-                      )),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10, right: 10, top: 5),
-                  width: double.infinity,
-                  child: MaterialButton(
+      body: ModalProgressHUD(
+        inAsyncCall: _isLoading,
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(5),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin:
+                        EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 5),
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 8, bottom: 8, left: 10, right: 10),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
+                        padding: EdgeInsets.only(
+                            top: 15.0, bottom: 5.0, left: 5, right: 5),
+                        child: TextFormField(
+                          controller: _email,
+                          //style: textStyle,
+                          validator: validateEmail1,
+                          decoration: InputDecoration(
+                              labelText: 'Email',
+                              focusColor: Colors.purple,
+                              labelStyle: TextStyle(
+                                  fontSize: 18.0, color: Colors.black),
+                              prefixIcon: Icon(Icons.person),
+                              errorStyle: TextStyle(
+                                  color: Colors.redAccent, fontSize: 15.0),
+                              hintText: "Email",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              )),
+                        )),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(5),
+                    child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 5.0, bottom: 5.0, left: 5, right: 5),
+                        child: TextFormField(
+                          controller: _password,
+                          obscureText: true,
+                          //style: textStyle,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Enter Your Password';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              labelText: 'Password',
+                              focusColor: Colors.purple,
+                              labelStyle: TextStyle(
+                                  fontSize: 18.0, color: Colors.black),
+                              prefixIcon: Icon(Icons.person),
+                              errorStyle: TextStyle(
+                                  color: Colors.redAccent, fontSize: 15.0),
+                              hintText: "Password",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              )),
+                        )),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10, right: 10, top: 5),
+                    width: double.infinity,
+                    child: MaterialButton(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 8, bottom: 8, left: 10, right: 10),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'coiny',
+                              color: Colors.white),
+                        ),
                       ),
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                        }
+                      },
+                      color: Colors.purple[300],
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        setState(() {
-                          _isLoading = true;
-                        });
-                      }
-                    },
-                    color: Colors.pink[300],
                   ),
-                ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                        child: Text(
-                      'Login With',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    )),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                          child: Text(
+                        'Login With',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'coiny',
+                        ),
+                      )),
+                    ),
                   ),
-                ),
-                _facebookSignInButton(),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                        child: Text(
-                      'OR',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    )),
-                  ),
-                ),
-                _signInButton()
-              ],
+                  //  _facebookSignInButton(),
+                  // Container(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: Center(
+                  //         child: Text(
+                  //       'OR',
+                  //       style: TextStyle(
+                  //           fontSize: 18, fontWeight: FontWeight.bold),
+                  //     )),
+                  //   ),
+                  // ),
+                  _signInButton()
+                ],
+              ),
             ),
           ),
         ),

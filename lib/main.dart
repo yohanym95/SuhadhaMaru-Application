@@ -1,13 +1,12 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/screens/LoginHome.dart';
 import 'package:suhadhamaru/screens/createProfile.dart';
-import 'package:suhadhamaru/widgets/loader.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.purple,
       ),
       home: LandingPage(),
     );
@@ -59,15 +58,20 @@ class LandingPageState extends State<LandingPage> {
             //   );
             // }
           }
-          return Loader();
+          return Scaffold(body: loaderWaveComment());
         } else {
-          return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return Scaffold(body: loaderWaveComment());
         }
       },
+    );
+  }
+
+  Widget loaderWaveComment() {
+    return Center(
+      child: SpinKitWave(
+        color: Colors.purpleAccent,
+        size: 50.0,
+      ),
     );
   }
 

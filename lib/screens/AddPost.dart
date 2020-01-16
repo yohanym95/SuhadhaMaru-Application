@@ -19,8 +19,7 @@ class PostState extends State<Post> {
   var _currencies = ['Police', 'Teacher', 'University'];
   var currencyValue = 'Police';
 
-  final DatabaseReference database =
-      FirebaseDatabase.instance.reference().child("Post");
+  DatabaseReference database = FirebaseDatabase.instance.reference();
 
   TextEditingController titleController = TextEditingController();
   TextEditingController postController = TextEditingController();
@@ -32,31 +31,15 @@ class PostState extends State<Post> {
   var _formKey = GlobalKey<FormState>();
 
   @override
-  initState() {
-    // TODO: implement initState
-    super.initState();
-
-    // Auth().getCurrentUser().then((user) {
-    //   if (user == null) {
-    //     Navigator.pushAndRemoveUntil(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => MyHomePage()),
-    //       (Route<dynamic> route) => false,
-    //     );
-    //   } else {
-    //     userId = user.uid;
-    //   }
-    // });
-  }
-
-  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
         key: homeScaffoldKey,
         appBar: AppBar(
-          backgroundColor: Colors.pink[300],
-          title: Text('Add Post'),
+          backgroundColor: Colors.purple[300],
+          title: Text('Add Post',
+              style:
+                  TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
         ),
         body: ModalProgressHUD(
           inAsyncCall: _isLoading,
@@ -160,20 +143,21 @@ class PostState extends State<Post> {
                           child: Text(
                             'Submit',
                             style: TextStyle(
-                                color: Colors.white,
                                 fontSize: 18,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'coiny',
+                                color: Colors.white),
                           ),
                         ),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             setState(() {
-                             _isLoading = true; 
+                              _isLoading = true;
                             });
                             savePost(homeScaffoldKey.currentState, context);
                           }
                         },
-                        color: Colors.pink[300],
+                        color: Colors.purple[300],
                       ),
                     ),
                   ],
@@ -192,29 +176,34 @@ class PostState extends State<Post> {
   }
 
   Future<void> savePost(ScaffoldState scaffold, BuildContext context) async {
+    String key = database.child("Post").push().key;
+
     String date = DateFormat.yMMMd().format(DateTime.now());
+
     var post = <String, dynamic>{
       'title': titleController.text,
       'Post': postController.text,
       'category': this.currencyValue,
       'date': date,
-      'confirm':'No'
+      'confirm': 'No',
+      'pushkey': key
     };
 
     return PostDetails()
-        .addPost(post, this.currencyValue, context)
+        .addPost(post, this.currencyValue, context, key)
         .then((onValue) {
       setState(() {
-       _isLoading = onValue; 
+        _isLoading = onValue;
       });
       scaffold.showSnackBar(new SnackBar(
         content: new Text("Your post Uploaded. Now it's at review process."),
       ));
       titleController.clear();
       postController.clear();
+     // Navigator.pop(context, true);
     }).catchError((onError) {
       setState(() {
-       _isLoading = false; 
+        _isLoading = false;
       });
       scaffold.showSnackBar(new SnackBar(
         content: new Text("Some Error occured. Please Try Again"),
@@ -222,7 +211,5 @@ class PostState extends State<Post> {
       titleController.clear();
       postController.clear();
     });
-
-    
   }
 }

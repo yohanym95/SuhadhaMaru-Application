@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/createProfile.dart';
 
@@ -24,8 +23,9 @@ class SignUpState extends State<SignUp> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
-        backgroundColor: Colors.pink[300],
+        title: Text('Sign Up',
+            style: TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.purple[300],
       ),
       body: ModalProgressHUD(
         inAsyncCall: _isLoading,
@@ -97,9 +97,10 @@ class SignUpState extends State<SignUp> {
                       child: Text(
                         'Sign Up',
                         style: TextStyle(
-                            color: Colors.white,
                             fontSize: 18,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'coiny',
+                            color: Colors.white),
                       ),
                     ),
                     onPressed: () async {
@@ -109,7 +110,6 @@ class SignUpState extends State<SignUp> {
                         });
                         signUp(_email.text, _password.text).then((result) {
                           setState(() async {
-                            
                             _isLoading = false;
                             Navigator.pushAndRemoveUntil(
                               context,
@@ -125,7 +125,7 @@ class SignUpState extends State<SignUp> {
                       //   MaterialPageRoute(builder: (context) => Profile()),
                       // );
                     },
-                    color: Colors.pink[300],
+                    color: Colors.purple[300],
                   ),
                 ),
               ],

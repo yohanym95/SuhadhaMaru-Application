@@ -1,12 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/model/Post.dart';
 import 'package:suhadhamaru/screens/LoginHome.dart';
-import 'package:suhadhamaru/screens/PolicePost.dart';
+import 'package:suhadhamaru/screens/PostPage.dart';
 import 'package:suhadhamaru/screens/Profile.dart';
-
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,15 +21,24 @@ class HomePageState extends State<HomePage> {
   String name1 = name;
   String email1 = email;
 
-  List<Posts> postList = [];
+  List<Posts> postPoliceList = [];
+  List<Posts> postTeacherList = [];
+  List<Posts> postDoctorList = [];
+  List<Posts> postNurseList = [];
 
   int policeLength;
+  int teacherLength;
+  int doctorLength;
+  int nurseLength;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getPolicePost();
+    getTeacherPost();
+    getDoctorPost();
+    getNursePost();
   }
 
   @override
@@ -39,7 +48,8 @@ class HomePageState extends State<HomePage> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('සුහඳ මාරු'),
+        title: Text('සුහඳ මාරු',
+            style: TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
         actions: <Widget>[
           Container(
             margin: EdgeInsets.only(right: 8, top: 13, bottom: 13),
@@ -59,7 +69,7 @@ class HomePageState extends State<HomePage> {
             ),
           )
         ],
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.purple[300],
       ),
       drawer: Drawer(
         child: ListView(
@@ -109,7 +119,7 @@ class HomePageState extends State<HomePage> {
             // height: MediaQuery.of(context).size.height - 180.0,
             padding: EdgeInsets.only(top: 20, right: 8, left: 8),
             decoration: BoxDecoration(
-                color: Colors.pink[300],
+                color: Colors.purple[200],
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(50.0),
                     topRight: Radius.circular(50.0))),
@@ -123,22 +133,25 @@ class HomePageState extends State<HomePage> {
                     child: Chip(
                       label: Text('Police',
                           style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold)),
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'coiny')),
                       backgroundColor: Colors.white,
                     ),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PolicePost()),
+                        MaterialPageRoute(
+                            builder: (context) => PostPage('Police')),
                       );
                     },
                   ),
                 ),
                 SizedBox(
                   height: height / 6,
-                  child: postList.length == 0
+                  child: postPoliceList.length == 0
                       ? Container(
-                          child: CircularProgressIndicator(),
+                          child: loaderWaveComment(),
                         )
                       : ListView.builder(
                           shrinkWrap: true,
@@ -156,16 +169,20 @@ class HomePageState extends State<HomePage> {
                                     padding: const EdgeInsets.only(
                                         top: 8, bottom: 5),
                                     child: Text(
-                                      '${postList[index].title}',
+                                      '${postPoliceList[index].title}',
                                       overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   subtitle: Padding(
                                     padding: const EdgeInsets.only(top: 5),
                                     child: Text(
-                                      '${postList[index].post}',
+                                      '${postPoliceList[index].post}',
                                       maxLines: 3,
                                       overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w900),
                                     ),
                                   ),
                                 ),
@@ -176,147 +193,195 @@ class HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Chip(
-                    label: Text('Police',
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.bold)),
-                    backgroundColor: Colors.white,
+                  child: GestureDetector(
+                    child: Chip(
+                      label: Text('Teacher',
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'coiny')),
+                      backgroundColor: Colors.white,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PostPage('Teacher')),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(
                   height: height / 6,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 3,
-                    itemBuilder: (context, i) {
-                      return Container(
-                        //alignment: Alignment.center,
-
-                        margin: EdgeInsets.only(left: 4),
-
-                        width: width / 1.5,
-
-                        //height: height / 5,
-
-                        child: Card(
-                          child: ListTile(
-                            title: Padding(
-                              padding: const EdgeInsets.only(top: 8, bottom: 5),
-                              child: Text(
-                                'I want to transfer from my job to anuradhapura',
-                                overflow: TextOverflow.ellipsis,
+                  child: postTeacherList.length == 0
+                      ? Container(
+                          child: loaderWaveComment(),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: teacherLength,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              //alignment: Alignment.center,
+                              margin: EdgeInsets.only(left: 4),
+                              width: width / 1.5,
+                              //height: height / 5,
+                              child: Card(
+                                child: ListTile(
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 5),
+                                    child: Text(
+                                      '${postTeacherList[index].title}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      '${postTeacherList[index].post}',
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Text(
-                                'I am from anuradhapura. but now i work in kalutara north police station. my family live in anuradhapura. so i want make a transfer to them',
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Chip(
-                    label: Text('Police',
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.bold)),
-                    backgroundColor: Colors.white,
+                  child: GestureDetector(
+                    child: Chip(
+                      label: Text('Doctor',
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'coiny')),
+                      backgroundColor: Colors.white,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PostPage('Doctor')),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(
                   height: height / 6,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 3,
-                    itemBuilder: (context, i) {
-                      return Container(
-                        //alignment: Alignment.center,
-
-                        margin: EdgeInsets.only(left: 4),
-
-                        width: width / 1.5,
-
-                        //height: height / 5,
-
-                        child: Card(
-                          child: ListTile(
-                            title: Padding(
-                              padding: const EdgeInsets.only(top: 8, bottom: 5),
-                              child: Text(
-                                'I want to transfer from my job to anuradhapura',
-                                overflow: TextOverflow.ellipsis,
+                  child: postDoctorList.length == 0
+                      ? Container(
+                          child: loaderWaveComment(),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: doctorLength,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              //alignment: Alignment.center,
+                              margin: EdgeInsets.only(left: 4),
+                              width: width / 1.5,
+                              //height: height / 5,
+                              child: Card(
+                                child: ListTile(
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 5),
+                                    child: Text(
+                                      '${postDoctorList[index].title}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      '${postDoctorList[index].post}',
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Text(
-                                'I am from anuradhapura. but now i work in kalutara north police station. my family live in anuradhapura. so i want make a transfer to them',
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Chip(
-                    label: Text('Police',
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.bold)),
-                    backgroundColor: Colors.white,
+                  child: GestureDetector(
+                    child: Chip(
+                      label: Text('Nurse',
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'coiny')),
+                      backgroundColor: Colors.white,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PostPage('Nurse')),
+                      );
+                    },
                   ),
                 ),
                 SizedBox(
                   height: height / 6,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 3,
-                    itemBuilder: (context, i) {
-                      return Container(
-                        //alignment: Alignment.center,
-
-                        margin: EdgeInsets.only(left: 4),
-
-                        width: width / 1.5,
-
-                        //height: height / 5,
-
-                        child: Card(
-                          child: ListTile(
-                            title: Padding(
-                              padding: const EdgeInsets.only(top: 8, bottom: 5),
-                              child: Text(
-                                'I want to transfer from my job to anuradhapura',
-                                overflow: TextOverflow.ellipsis,
+                  child: postNurseList.length == 0
+                      ? Container(
+                          child: loaderWaveComment(),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: nurseLength,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              //alignment: Alignment.center,
+                              margin: EdgeInsets.only(left: 4),
+                              width: width / 1.5,
+                              //height: height / 5,
+                              child: Card(
+                                child: ListTile(
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 5),
+                                    child: Text(
+                                      '${postNurseList[index].title}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      '${postNurseList[index].post}',
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Text(
-                                'I am from anuradhapura. but now i work in kalutara north police station. my family live in anuradhapura. so i want make a transfer to them',
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ],
             ),
@@ -333,28 +398,137 @@ class HomePageState extends State<HomePage> {
       var keys = data.value.keys;
       var Data1 = data.value;
 
-      postList.clear();
+      postPoliceList.clear();
 
       for (var individualKey in keys) {
         Posts posts = new Posts(
             Data1[individualKey]['title'],
             Data1[individualKey]['Post'],
             Data1[individualKey]['date'],
-            Data1[individualKey]['confirm']);
+            Data1[individualKey]['confirm'],
+            Data1[individualKey]['pushkey']);
 
         if (Data1[individualKey]['confirm'] == "Yes") {
-          postList.add(posts);
+          postPoliceList.add(posts);
         }
       }
 
       setState(() {
-        if (postList.length >= 3) {
+        if (postPoliceList.length >= 3) {
           policeLength = 3;
         } else {
-          policeLength = postList.length;
+          policeLength = postPoliceList.length;
         }
         print(policeLength);
       });
     });
+  }
+
+  Future getTeacherPost() async {
+    DatabaseReference database =
+        FirebaseDatabase.instance.reference().child("Posts").child('Teacher');
+    database.once().then((DataSnapshot data) {
+      var keys = data.value.keys;
+      var Data1 = data.value;
+
+      postTeacherList.clear();
+
+      for (var individualKey in keys) {
+        Posts posts = new Posts(
+            Data1[individualKey]['title'],
+            Data1[individualKey]['Post'],
+            Data1[individualKey]['date'],
+            Data1[individualKey]['confirm'],
+            Data1[individualKey]['pushkey']);
+
+        if (Data1[individualKey]['confirm'] == "Yes") {
+          postTeacherList.add(posts);
+        }
+      }
+
+      setState(() {
+        if (postTeacherList.length >= 3) {
+          teacherLength = 3;
+        } else {
+          teacherLength = postTeacherList.length;
+        }
+        print(teacherLength);
+      });
+    });
+  }
+
+  Future getDoctorPost() async {
+    DatabaseReference database =
+        FirebaseDatabase.instance.reference().child("Posts").child('Doctor');
+    database.once().then((DataSnapshot data) {
+      var keys = data.value.keys;
+      var Data1 = data.value;
+
+      postDoctorList.clear();
+
+      for (var individualKey in keys) {
+        Posts posts = new Posts(
+            Data1[individualKey]['title'],
+            Data1[individualKey]['Post'],
+            Data1[individualKey]['date'],
+            Data1[individualKey]['confirm'],
+            Data1[individualKey]['pushkey']);
+
+        if (Data1[individualKey]['confirm'] == "Yes") {
+          postDoctorList.add(posts);
+        }
+      }
+
+      setState(() {
+        if (postDoctorList.length >= 3) {
+          doctorLength = 3;
+        } else {
+          doctorLength = postDoctorList.length;
+        }
+        print(doctorLength);
+      });
+    });
+  }
+
+  Future getNursePost() async {
+    DatabaseReference database =
+        FirebaseDatabase.instance.reference().child("Posts").child('Nurse');
+    database.once().then((DataSnapshot data) {
+      var keys = data.value.keys;
+      var Data1 = data.value;
+
+      postNurseList.clear();
+
+      for (var individualKey in keys) {
+        Posts posts = new Posts(
+            Data1[individualKey]['title'],
+            Data1[individualKey]['Post'],
+            Data1[individualKey]['date'],
+            Data1[individualKey]['confirm'],
+            Data1[individualKey]['pushkey']);
+
+        if (Data1[individualKey]['confirm'] == "Yes") {
+          postNurseList.add(posts);
+        }
+      }
+
+      setState(() {
+        if (postNurseList.length >= 3) {
+          nurseLength = 3;
+        } else {
+          nurseLength = postNurseList.length;
+        }
+        print(nurseLength);
+      });
+    });
+  }
+
+  Widget loaderWaveComment() {
+    return Center(
+      child: SpinKitThreeBounce(
+        color: Colors.purpleAccent,
+        size: 50.0,
+      ),
+    );
   }
 }

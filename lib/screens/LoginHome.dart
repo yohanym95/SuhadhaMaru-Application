@@ -19,23 +19,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     // setState(() {
-    //   signedIn(); 
+    //   signedIn();
     // });
   }
-
-  // void signedIn() {
-    // Auth().getCurrentUser().then((user) {
-    //   if (user != null) {
-    //     setState(() {
-    //       Navigator.pushAndRemoveUntil(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => HomePage()),
-    //       (Route<dynamic> route) => false,
-    //     );
-    //     });
-    //   } 
-    // });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +32,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Color> orangeGradient = [
-    Colors.pink[100],
-    Colors.pink[200],
-    Colors.pink[300],
+    Colors.purple[100],
+    Colors.purple[200],
+    Colors.purple[300],
   ];
 
   Widget loginDetails() {
@@ -75,7 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   'සුහඳ මාරු',
                   style: TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'coiny',
                       color: Colors.indigo),
                 ),
               ),
@@ -89,9 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text(
                     'Alreay Have Account',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'coiny',
+                      color: Colors.white
+                    ),
                   ),
                 ),
                 onPressed: () {
@@ -100,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => Login()),
                   );
                 },
-                color: Colors.pinkAccent,
+                color: Colors.purple[300],
               ),
             ),
             Container(
@@ -113,9 +102,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text(
                     'Create New Account',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'coiny',
+                      color: Colors.white
+                    ),
                   ),
                 ),
                 onPressed: () {
@@ -124,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => SignUp()),
                   );
                 },
-                color: Colors.pinkAccent,
+                color: Colors.purple[300],
               ),
             ),
           ],
