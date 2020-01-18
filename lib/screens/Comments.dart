@@ -51,19 +51,19 @@ class _CommentsState extends State<Comments> {
         title: Text('Comments'),
       ),
       body: Container(
-        child: commentsPage(height),
+        child: commentsPage(height, context),
       ),
     );
   }
 
-  Widget commentsPage(double height) {
+  Widget commentsPage(double height, BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Expanded(flex: 5, child: commentsList()),
+          Expanded(flex: 5, child: commentsList(context)),
           // Expanded(
           //   flex: 1,
           //   child: Container(),
@@ -117,7 +117,9 @@ class _CommentsState extends State<Comments> {
     );
   }
 
-  Widget commentsList() {
+  Widget commentsList(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return FutureBuilder(
         future: FirebaseDatabase.instance
             .reference()
@@ -128,49 +130,66 @@ class _CommentsState extends State<Comments> {
             .once(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            var keys = snapshot.data.value.keys;
             var Data1 = snapshot.data.value;
-            postList.clear();
+            if (Data1 != null) {
+              var keys = snapshot.data.value.keys;
 
-            for (var individualKey in keys) {
-              Comment comments = new Comment(
-                  Data1[individualKey]['comment'],
-                  Data1[individualKey]['photourl'],
-                  Data1[individualKey]['userName'],
-                  Data1[individualKey]['date'],
-                  Data1[individualKey]['key']);
-              if (Data1[individualKey]['key'] == text) {
+              postList.clear();
+
+              for (var individualKey in keys) {
+                Comment comments = new Comment(
+                    Data1[individualKey]['comment'],
+                    Data1[individualKey]['photourl'],
+                    Data1[individualKey]['userName'],
+                    Data1[individualKey]['date'],
+                    Data1[individualKey]['key']);
+                // if (Data1[individualKey]['key'] == text) {
                 postList.add(comments);
 
                 ///  postListreversed = postList.reversed;
+
               }
+
+              return ListView.builder(
+                itemCount: postList.length,
+                itemBuilder: (_, index) {
+                  // return Text('${postList[index].comment}');
+
+                  return Card(
+                    child: ListTile(
+                      leading: url == null
+                          ? Icon(
+                              Icons.people,
+                              color: Colors.purple[100],
+                            )
+                          : CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(postList[index].photoUrl),
+                            ),
+                      title: Text('${postList[index].userName}'),
+                      subtitle: Text(
+                          '${postList[index].comment} \n ${postList[index].date}'),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: Container(
+                  height: height / 7,
+                  width: width,
+                  child: Center(
+                      child: Text(
+                    'No Comments in this post',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'coiny',
+                        color: Colors.black87),
+                  )),
+                ),
+              );
             }
-
-            return ListView.builder(
-              itemCount: postList.length,
-              itemBuilder: (_, index) {
-                // return Text('${postList[index].comment}');
-
-                return Card(
-                  child: ListTile(
-                    leading: url == null
-                        ? Icon(
-                            Icons.people,
-                            color: Colors.purple[100],
-                          )
-                        : CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(postList[index].photoUrl),
-                          ),
-                    title: Text('${postList[index].userName}'),
-                    subtitle: Text(
-                        '${postList[index].comment} \n ${postList[index].date}'),
-                  ),
-                );
-              },
-            );
-          } else {
-            ShimmerList();
           }
 
           return ShimmerList();
@@ -247,7 +266,7 @@ class ShimmerLayout extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                height: containerHeight ,
+                height: containerHeight,
                 width: containerWidth * 0.70,
                 color: Colors.grey,
               ),

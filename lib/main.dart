@@ -7,21 +7,34 @@ import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/screens/LoginHome.dart';
 import 'package:suhadhamaru/screens/createProfile.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(EasyLocalization(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
+      data: data,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+        ),
+        home: LandingPage(),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          EasylocaLizationDelegate(locale: data.locale, path: 'assests/lang')
+        ],
+        supportedLocales: [Locale('en', 'US'), Locale('si', 'SL')],
+        locale: data.savedLocale,
       ),
-      home: LandingPage(),
     );
   }
 }

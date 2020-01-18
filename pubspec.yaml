@@ -28,12 +28,14 @@ dependencies:
   firebase_auth: ^0.14.0+9
   firebase_database: ^3.1.0
   modal_progress_hud: ^0.1.3
-  intl: ^0.15.8
   google_sign_in: ^4.1.1
   flutter_facebook_login: ^3.0.0
   flutter_spinkit: ^4.1.1+1
   shimmer: ^1.0.1
+  easy_localization: ^1.3.1
 
+dependency_overrides:
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +58,8 @@ flutter:
    - assests/google_logo.png
    - assests/Facebook_Logo.png
    - assests/peopletransfer.jpg
+   - assests/lang/en-US.json
+   - assests/lang/si-SL.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

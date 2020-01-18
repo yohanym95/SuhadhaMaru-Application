@@ -1,0 +1,13 @@
+{
+    "loginHome": {
+        "main": {
+            "loginPageTitle": "Suhadha Maru"
+        }
+    },
+    "appBarTitle": "Suhadha Maru",
+    "homePage":{
+        "languageDialog":{
+            "title":"Select the language"
+        }
+    }
+}

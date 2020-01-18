@@ -1,0 +1,13 @@
+{
+    "loginHome": {
+        "main": {
+            "loginPageTitle": "සුහඳ මාරු"
+        }
+    },
+    "appBarTitle": "සුහඳ මාරු",
+    "homePage":{
+        "languageDialog":{
+            "title":"භාෂාව තෝරගන්න"
+        }
+    }
+}

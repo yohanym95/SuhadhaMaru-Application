@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
@@ -25,10 +26,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(
-      children: <Widget>[clipper(), loginDetails()],
-    ));
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
+      data: data,
+      child: Scaffold(
+          body: Stack(
+        children: <Widget>[clipper(), loginDetails()],
+      )),
+    );
   }
 
   List<Color> orangeGradient = [
@@ -58,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(
-                  'සුහඳ මාරු',
+                  AppLocalizations.of(context).tr('loginHome.main.loginPageTitle'),
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
@@ -76,11 +81,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text(
                     'Alreay Have Account',
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'coiny',
-                      color: Colors.white
-                    ),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'coiny',
+                        color: Colors.white),
                   ),
                 ),
                 onPressed: () {
@@ -102,11 +106,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text(
                     'Create New Account',
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'coiny',
-                      color: Colors.white
-                    ),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'coiny',
+                        color: Colors.white),
                   ),
                 ),
                 onPressed: () {
