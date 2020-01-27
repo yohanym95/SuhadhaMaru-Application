@@ -18,8 +18,8 @@ class ProfileState extends State<Profile> {
   TextEditingController _email = TextEditingController();
   TextEditingController _currencity = TextEditingController();
   // array for dropdown
-  var _currencies = ['Police', 'Teacher', 'University'];
-  var currencyValue = 'Police';
+  // var _currencies = ['Police', 'Teacher', 'University'];
+  // var currencyValue = 'Police';
   //bool for modalprogressHUD
   bool _isLoading = false;
 
@@ -40,36 +40,23 @@ class ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.blue[300],
       ),
       body: ModalProgressHUD(
         inAsyncCall: _isLoading,
         child: SingleChildScrollView(
-          child: Container(
-              margin: EdgeInsets.all(5),
-              child: url == null
-                  ? Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircularProgressIndicator(),
-                          new Text("Loading"),
-                        ],
-                      ),
-                    )
-                  : createProfileUI()),
+          child: Container(margin: EdgeInsets.all(5), child: createProfileUI()),
         ),
       ),
     );
   }
 
-  void onClickedItem(String dropdownitem) {
-    setState(() {
-      this.currencyValue = dropdownitem;
-      print(this.currencyValue);
-    });
-  }
+  // void onClickedItem(String dropdownitem) {
+  //   setState(() {
+  //     this.currencyValue = dropdownitem;
+  //     print(this.currencyValue);
+  //   });
+  // }
 
   Widget createProfileUI() {
     _firstname.text = name;
@@ -88,11 +75,22 @@ class ProfileState extends State<Profile> {
                   fontStyle: FontStyle.normal),
             ),
           )),
-          CircleAvatar(
-            backgroundImage: NetworkImage(url),
-            radius: 60,
-            backgroundColor: Colors.transparent,
-          ),
+          url == null
+              ? Container(
+                  width: 100,
+                  height: 100,
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.purple[100],
+                    ),
+                  ),
+                )
+              : CircleAvatar(
+                  backgroundImage: NetworkImage(url),
+                  radius: 60,
+                  backgroundColor: Colors.transparent,
+                ),
           Container(
             margin: EdgeInsets.only(top: 5, left: 5, right: 5, bottom: 5),
             child: Padding(
@@ -108,14 +106,14 @@ class ProfileState extends State<Profile> {
                     return null;
                   },
                   decoration: InputDecoration(
-                      labelText: 'First Name',
-                      focusColor: Colors.pink,
+                      labelText: 'Name',
+                      focusColor: Colors.blue,
                       labelStyle:
                           TextStyle(fontSize: 18.0, color: Colors.black),
                       prefixIcon: Icon(Icons.person),
                       errorStyle:
                           TextStyle(color: Colors.redAccent, fontSize: 15.0),
-                      hintText: "First Name",
+                      hintText: "Name",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       )),
@@ -137,7 +135,7 @@ class ProfileState extends State<Profile> {
                   },
                   decoration: InputDecoration(
                       labelText: 'Email',
-                      focusColor: Colors.pink,
+                      focusColor: Colors.blue,
                       labelStyle:
                           TextStyle(fontSize: 18.0, color: Colors.black),
                       prefixIcon: Icon(Icons.person),
@@ -149,39 +147,39 @@ class ProfileState extends State<Profile> {
                       )),
                 )),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      'Category',
-                      style: TextStyle(color: Colors.black, fontSize: 15),
-                    )),
-                Expanded(
-                  flex: 4,
-                  child: Card(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      items: _currencies.map((String dropDownStringItem) {
-                        return DropdownMenuItem<String>(
-                            value: dropDownStringItem,
-                            child: Text(
-                              dropDownStringItem,
-                              textAlign: TextAlign.center,
-                            ));
-                      }).toList(),
-                      onChanged: (String dropdownitem) {
-                        onClickedItem(dropdownitem);
-                      },
-                      value: currencyValue,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(10.0),
+          //   child: Row(
+          //     children: <Widget>[
+          //       Expanded(
+          //           flex: 1,
+          //           child: Text(
+          //             'Category',
+          //             style: TextStyle(color: Colors.black, fontSize: 15),
+          //           )),
+          //       Expanded(
+          //         flex: 4,
+          //         child: Card(
+          //           child: DropdownButton<String>(
+          //             isExpanded: true,
+          //             items: _currencies.map((String dropDownStringItem) {
+          //               return DropdownMenuItem<String>(
+          //                   value: dropDownStringItem,
+          //                   child: Text(
+          //                     dropDownStringItem,
+          //                     textAlign: TextAlign.center,
+          //                   ));
+          //             }).toList(),
+          //             onChanged: (String dropdownitem) {
+          //               onClickedItem(dropdownitem);
+          //             },
+          //             value: currencyValue,
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           Container(
             margin: EdgeInsets.all(5),
             child: Padding(
@@ -198,7 +196,7 @@ class ProfileState extends State<Profile> {
                   },
                   decoration: InputDecoration(
                       labelText: 'Current City',
-                      focusColor: Colors.pink,
+                      focusColor: Colors.blue,
                       labelStyle:
                           TextStyle(fontSize: 18.0, color: Colors.black),
                       prefixIcon: Icon(Icons.person),
@@ -233,18 +231,18 @@ class ProfileState extends State<Profile> {
 
                   print(_firstname.text);
                   print(_email.text);
-                  print(this.currencyValue);
+                  // print(this.currencyValue);
                   print(_currencity.text);
 
                   UserManagement().addData({
                     'fullName': _firstname.text,
                     'email': _email.text,
-                    'category': this.currencyValue,
                     'currentCity': _currencity.text,
                     'photoUrl': url
                   }, userId1, context).then((onValue) {
                     setState(() {
                       _isLoading = onValue;
+                      print(onValue);
                     });
                   }).catchError((onError) {
                     setState(() {
@@ -253,7 +251,7 @@ class ProfileState extends State<Profile> {
                   });
                 }
               },
-              color: Colors.pink[300],
+              color: Colors.blue[300],
             ),
           ),
         ],

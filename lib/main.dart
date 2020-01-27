@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.purple,
+          primarySwatch: Colors.blue,
         ),
         home: LandingPage(),
         localizationsDelegates: [
@@ -75,6 +74,7 @@ class LandingPageState extends State<LandingPage> {
         } else {
           return Scaffold(body: loaderWaveComment());
         }
+        return Scaffold(body: loaderWaveComment());
       },
     );
   }
@@ -82,7 +82,7 @@ class LandingPageState extends State<LandingPage> {
   Widget loaderWaveComment() {
     return Center(
       child: SpinKitWave(
-        color: Colors.purpleAccent,
+        color: Colors.blue,
         size: 50.0,
       ),
     );

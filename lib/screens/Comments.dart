@@ -10,19 +10,30 @@ import 'package:suhadhamaru/model/comment.dart';
 class Comments extends StatefulWidget {
   String text;
   String category;
+  String userphotoUrl, userName, userPostTitle, userPost, postDate;
 
-  Comments(this.text, this.category);
+  Comments(this.text, this.category, this.userphotoUrl, this.userName,
+      this.userPostTitle, this.userPost, this.postDate);
   @override
-  _CommentsState createState() => _CommentsState(this.text, this.category);
+  _CommentsState createState() => _CommentsState(
+      this.text,
+      this.category,
+      this.userphotoUrl,
+      this.userName,
+      this.userPostTitle,
+      this.userPost,
+      this.postDate);
 }
 
 class _CommentsState extends State<Comments> {
   String text;
   String category;
+  String userphotoUrl, userName, userPostTitle, userPost, postDate;
   String url = imageUrl;
   String name1 = name;
 
-  _CommentsState(this.text, this.category);
+  _CommentsState(this.text, this.category, this.userphotoUrl, this.userName,
+      this.userPostTitle, this.userPost, this.postDate);
 
   TextEditingController commentController = TextEditingController();
   final homeScaffoldKey = new GlobalKey<ScaffoldState>();
@@ -47,12 +58,10 @@ class _CommentsState extends State<Comments> {
     return Scaffold(
       key: homeScaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.purple[300],
+        backgroundColor: Colors.blue[300],
         title: Text('Comments'),
       ),
-      body: Container(
-        child: commentsPage(height, context),
-      ),
+      body: commentsPage(height, context),
     );
   }
 
@@ -76,27 +85,31 @@ class _CommentsState extends State<Comments> {
 
   Widget commentText(double height) {
     return Container(
-      // height: height * 0.20,
+      color: Colors.white,
+      alignment: Alignment.center,
       child: Padding(
           padding: const EdgeInsets.all(5.0),
           child: Row(
             children: <Widget>[
               Expanded(
                 flex: 6,
-                child: TextFormField(
-                  controller: commentController,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Enter your comments';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                      hintText: 'Write Your Comment..',
-                      errorStyle:
-                          TextStyle(color: Colors.redAccent, fontSize: 14.0),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0))),
+                child: Container(
+                  // height: 50,
+                  child: TextFormField(
+                    controller: commentController,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Enter your comments';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        hintText: 'Write Your Comment..',
+                        errorStyle:
+                            TextStyle(color: Colors.redAccent, fontSize: 14.0),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0))),
+                  ),
                 ),
               ),
               Expanded(
@@ -120,80 +133,97 @@ class _CommentsState extends State<Comments> {
   Widget commentsList(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return FutureBuilder(
-        future: FirebaseDatabase.instance
-            .reference()
-            .child("Comments")
-            .child(category)
-            .orderByChild('key')
-            .equalTo(text)
-            .once(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            var Data1 = snapshot.data.value;
-            if (Data1 != null) {
-              var keys = snapshot.data.value.keys;
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: FutureBuilder(
+            future: FirebaseDatabase.instance
+                .reference()
+                .child("Comments")
+                .child(category)
+                .orderByChild('key')
+                .equalTo(text)
+                .once(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                var Data1 = snapshot.data.value;
+                if (Data1 != null) {
+                  var keys = snapshot.data.value.keys;
 
-              postList.clear();
+                  postList.clear();
 
-              for (var individualKey in keys) {
-                Comment comments = new Comment(
-                    Data1[individualKey]['comment'],
-                    Data1[individualKey]['photourl'],
-                    Data1[individualKey]['userName'],
-                    Data1[individualKey]['date'],
-                    Data1[individualKey]['key']);
-                // if (Data1[individualKey]['key'] == text) {
-                postList.add(comments);
+                  for (var individualKey in keys) {
+                    Comment comments = new Comment(
+                        Data1[individualKey]['comment'],
+                        Data1[individualKey]['photourl'],
+                        Data1[individualKey]['userName'],
+                        Data1[individualKey]['date'],
+                        Data1[individualKey]['key']);
+                    // if (Data1[individualKey]['key'] == text) {
+                    postList.add(comments);
+                    print(Data1[individualKey]['comment']);
 
-                ///  postListreversed = postList.reversed;
+                    ///  postListreversed = postList.reversed;
 
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: postList.length,
+                    itemBuilder: (_, index) {
+                      // return Text('${postList[index].comment}');
+
+                      return Card(
+                        child: ListTile(
+                          leading: postList[index].photoUrl == null
+                              ? Icon(
+                                  Icons.people,
+                                  color: Colors.purple[100],
+                                )
+                              : CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(postList[index].photoUrl),
+                                ),
+                          title: Text('${postList[index].userName}'),
+                          subtitle: Text(
+                              '${postList[index].comment} \n ${postList[index].date}'),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: Container(
+                        padding: EdgeInsets.all(4),
+                        height: height / 5,
+                        width: width / 2,
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                                child: Icon(
+                              Icons.message,
+                              size: 50,
+                            )),
+                            Text(
+                              'No Comments in this post yet!',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontFamily: 'coiny',
+                                  color: Colors.black26),
+                            )
+                          ],
+                        ))),
+                  );
+                }
               }
 
-              return ListView.builder(
-                itemCount: postList.length,
-                itemBuilder: (_, index) {
-                  // return Text('${postList[index].comment}');
-
-                  return Card(
-                    child: ListTile(
-                      leading: url == null
-                          ? Icon(
-                              Icons.people,
-                              color: Colors.purple[100],
-                            )
-                          : CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(postList[index].photoUrl),
-                            ),
-                      title: Text('${postList[index].userName}'),
-                      subtitle: Text(
-                          '${postList[index].comment} \n ${postList[index].date}'),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return Center(
-                child: Container(
-                  height: height / 7,
-                  width: width,
-                  child: Center(
-                      child: Text(
-                    'No Comments in this post',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'coiny',
-                        color: Colors.black87),
-                  )),
-                ),
-              );
-            }
-          }
-
-          return ShimmerList();
-        });
+              return ShimmerList();
+            }),
+      ),
+    );
   }
 
   Future<void> saveComment(

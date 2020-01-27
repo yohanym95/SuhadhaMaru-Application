@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:suhadhamaru/logic/auth.dart';
@@ -25,7 +24,7 @@ class SignUpState extends State<SignUp> {
       appBar: AppBar(
         title: Text('Sign Up',
             style: TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.purple[300],
+        backgroundColor: Colors.blue[300],
       ),
       body: ModalProgressHUD(
         inAsyncCall: _isLoading,
@@ -46,7 +45,7 @@ class SignUpState extends State<SignUp> {
                         validator: validateEmail1,
                         decoration: InputDecoration(
                             labelText: 'Email',
-                            focusColor: Colors.pink,
+                            focusColor: Colors.blue,
                             labelStyle:
                                 TextStyle(fontSize: 18.0, color: Colors.black),
                             prefixIcon: Icon(Icons.person),
@@ -75,10 +74,10 @@ class SignUpState extends State<SignUp> {
                         },
                         decoration: InputDecoration(
                             labelText: 'Password',
-                            focusColor: Colors.pink,
+                            focusColor: Colors.blue,
                             labelStyle:
                                 TextStyle(fontSize: 18.0, color: Colors.black),
-                            prefixIcon: Icon(Icons.keyboard_hide),
+                            prefixIcon: Icon(Icons.no_encryption),
                             errorStyle: TextStyle(
                                 color: Colors.redAccent, fontSize: 15.0),
                             hintText: "Password",
@@ -118,6 +117,8 @@ class SignUpState extends State<SignUp> {
                               (Route<dynamic> route) => false,
                             );
                           });
+                        }).catchError((onError){
+                          print('error error errorr');
                         });
                       }
                       // Navigator.push(
@@ -125,7 +126,7 @@ class SignUpState extends State<SignUp> {
                       //   MaterialPageRoute(builder: (context) => Profile()),
                       // );
                     },
-                    color: Colors.purple[300],
+                    color: Colors.blue[300],
                   ),
                 ),
               ],

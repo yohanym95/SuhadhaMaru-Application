@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:suhadhamaru/logic/auth.dart';
-import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/screens/login.dart';
 import 'package:suhadhamaru/screens/signup.dart';
 
@@ -36,10 +34,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Color> orangeGradient = [
-    Colors.purple[100],
-    Colors.purple[200],
-    Colors.purple[300],
+  List<Color> colorGradient = [
+    Colors.blue[100],
+    Colors.blue[200],
+    Colors.blue[300],
   ];
 
   Widget loginDetails() {
@@ -93,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => Login()),
                   );
                 },
-                color: Colors.purple[300],
+                color: Colors.blue[300],
               ),
             ),
             Container(
@@ -118,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => SignUp()),
                   );
                 },
-                color: Colors.purple[300],
+                color: Colors.blue[300],
               ),
             ),
           ],
@@ -133,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: orangeGradient,
+                colors: colorGradient,
                 begin: Alignment.topLeft,
                 end: Alignment.topCenter)),
       ),

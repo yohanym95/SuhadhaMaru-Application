@@ -27,11 +27,6 @@ class HomePageState extends State<HomePage> {
   List<Posts> postDoctorList = [];
   List<Posts> postNurseList = [];
 
-  int policeLength;
-  int teacherLength;
-  int doctorLength;
-  int nurseLength;
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -45,26 +40,7 @@ class HomePageState extends State<HomePage> {
           title: Text(AppLocalizations.of(context).tr('appBarTitle'),
               style:
                   TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
-          actions: <Widget>[
-            Container(
-              margin: EdgeInsets.only(right: 8, top: 13, bottom: 13),
-              padding: EdgeInsets.all(3),
-              child: FlatButton(
-                color: Colors.pink[100],
-                child: Text('LOGOUT'),
-                onPressed: () {
-                  signOut().then((onValue) {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()),
-                      (Route<dynamic> route) => false,
-                    );
-                  });
-                },
-              ),
-            )
-          ],
-          backgroundColor: Colors.purple[300],
+          backgroundColor: Colors.blue[300],
         ),
         drawer: Drawer(
           child: ListView(
@@ -73,11 +49,32 @@ class HomePageState extends State<HomePage> {
                 child: new UserAccountsDrawerHeader(
                     accountName: Text("$name1"),
                     accountEmail: Text("$email1"),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundImage: NetworkImage(url),
-                      radius: 60,
-                      backgroundColor: Colors.transparent,
-                    )),
+                    currentAccountPicture: url == 'url'
+                        ? Container(
+                            width: 100,
+                            height: 100,
+                            child: CircleAvatar(
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.purple[100],
+                              ),
+                            ),
+                          )
+                        : CircleAvatar(
+                            backgroundImage: NetworkImage(url),
+                            radius: 60,
+                            backgroundColor: Colors.transparent,
+                          )),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                },
+              ),
+              new ListTile(
+                title: Text("My Profile"),
+                // trailing: Icon(Icons.arrow_upward),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -94,8 +91,16 @@ class HomePageState extends State<HomePage> {
               ),
               new Divider(),
               new ListTile(
-                title: Text(" Close"),
-                trailing: Icon(Icons.close),
+                title: Text("Logout"),
+                onTap: () {
+                  signOut().then((onValue) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                      (Route<dynamic> route) => false,
+                    );
+                  });
+                },
               ),
             ],
           ),
@@ -109,12 +114,13 @@ class HomePageState extends State<HomePage> {
               padding: const EdgeInsets.only(left: 5.0, right: 5),
               child: Container(
                 // height: MediaQuery.of(context).size.height - 180.0,
-                padding: EdgeInsets.only(top: 20, right: 8, left: 8),
+                padding: EdgeInsets.only(top: 13, right: 8, left: 8),
                 decoration: BoxDecoration(
-                    color: Colors.purple[200],
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50.0),
-                        topRight: Radius.circular(50.0))),
+                  color: Colors.blue[800].withAlpha(120),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50.0),
+                      topRight: Radius.circular(50.0)),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -127,8 +133,9 @@ class HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'coiny')),
-                          backgroundColor: Colors.white,
+                                  fontFamily: 'coiny',
+                                  color: Colors.black54)),
+                          backgroundColor: Colors.blue[200],
                         ),
                         onTap: () {
                           Navigator.push(
@@ -145,9 +152,8 @@ class HomePageState extends State<HomePage> {
                         future: FirebaseDatabase.instance
                             .reference()
                             .child("Posts")
-                            .child('Police')
-                            .orderByChild('confirm')
-                            .equalTo('Yes')
+                            .orderByChild('category')
+                            .equalTo('Police')
                             .once(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
@@ -162,67 +168,247 @@ class HomePageState extends State<HomePage> {
                                     Data1[individualKey]['Post'],
                                     Data1[individualKey]['date'],
                                     Data1[individualKey]['confirm'],
-                                    Data1[individualKey]['pushkey']);
-                                postPoliceList.add(posts);
+                                    Data1[individualKey]['pushkey'],
+                                    Data1[individualKey]['userPhotoUrl'],
+                                    Data1[individualKey]['userName'],
+                                    Data1[individualKey]['userId'],
+                                    Data1[individualKey]['category']);
+
+                                if (Data1[individualKey]['confirm'] == 'Yes') {
+                                  postPoliceList.add(posts);
+                                }
                               }
 
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: postPoliceList.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    //alignment: Alignment.center,
-                                    margin: EdgeInsets.only(left: 4),
-                                    width: width / 1.5,
-                                    //height: height / 5,
-                                    child: Card(
-                                      child: ListTile(
-                                        title: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, bottom: 5),
-                                          child: Text(
-                                            '${postPoliceList[index].title}',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        subtitle: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 5),
-                                          child: Text(
-                                            '${postPoliceList[index].post}',
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900),
-                                          ),
-                                        ),
+                              return postPoliceList.length == 0
+                                  ? Center(
+                                      child: Card(
+                                        elevation: 5.0,
+                                        child: Container(
+                                            padding: EdgeInsets.all(4),
+                                            height: height / 7,
+                                            width: width / 2,
+                                            child: Center(
+                                                child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                        "assests/emptypost.png"),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 4,
+                                                ),
+                                                Text(
+                                                  'No Recent Posts in this category!',
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      fontFamily: 'coiny',
+                                                      color: Colors.black26),
+                                                )
+                                              ],
+                                            ))),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
+                                    )
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: postPoliceList.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          width: width / 1.5,
+                                          child: Card(
+                                            child: Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3.0),
+                                                      child: postPoliceList[
+                                                                      index]
+                                                                  .userPhotoUrl ==
+                                                              null
+                                                          ? Icon(
+                                                              Icons.person,
+                                                              color: Colors
+                                                                  .purple[100],
+                                                            )
+                                                          : CircleAvatar(
+                                                              backgroundImage: NetworkImage(
+                                                                  postPoliceList[
+                                                                          index]
+                                                                      .userPhotoUrl),
+                                                            ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(4.0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          10.0,
+                                                                      top: 8),
+                                                              child: Text(
+                                                                '${postPoliceList[index].userName}',
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8.0),
+                                                              child: Text(
+                                                                '${postPoliceList[index].title}',
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                maxLines: 3,
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black87),
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              '${postPoliceList[index].post}',
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black87),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Spacer(),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      // Expanded(
+                                                      //   child:
+                                                      // ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          '${postPoliceList[index].date}',
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
                             } else {
                               return Center(
                                 child: Card(
+                                  elevation: 5.0,
                                   child: Container(
-                                    height: height / 7,
-                                    width: width / 2,
-                                    child: Center(
-                                        child: Text(
-                                      'No Recent Posts',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: 'coiny',
-                                          color: Colors.black87),
-                                    )),
-                                  ),
+                                      padding: EdgeInsets.all(4),
+                                      height: height / 7,
+                                      width: width / 2,
+                                      child: Center(
+                                          child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "assests/emptypost.png"),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            'No Recent Posts in this category!',
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                fontFamily: 'coiny',
+                                                color: Colors.black26),
+                                          )
+                                        ],
+                                      ))),
                                 ),
                               );
                             }
+                          } else {
+                            return Center(
+                              child: Card(
+                                elevation: 5.0,
+                                child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    height: height / 7,
+                                    width: width / 2,
+                                    child: Center(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Image(
+                                            image: AssetImage(
+                                                "assests/emptypost.png"),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        Text(
+                                          'No Recent Posts in this category!',
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              fontFamily: 'coiny',
+                                              color: Colors.black26),
+                                        )
+                                      ],
+                                    ))),
+                              ),
+                            );
                           }
                           return loaderWaveComment();
                         },
@@ -236,8 +422,9 @@ class HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'coiny')),
-                          backgroundColor: Colors.white,
+                                  fontFamily: 'coiny',
+                                  color: Colors.black54)),
+                          backgroundColor: Colors.blue[200],
                         ),
                         onTap: () {
                           Navigator.push(
@@ -254,9 +441,8 @@ class HomePageState extends State<HomePage> {
                         future: FirebaseDatabase.instance
                             .reference()
                             .child("Posts")
-                            .child('Teacher')
-                            .orderByChild('confirm')
-                            .equalTo('Yes')
+                            .orderByChild('category')
+                            .equalTo('Teacher')
                             .once(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
@@ -271,67 +457,246 @@ class HomePageState extends State<HomePage> {
                                     Data1[individualKey]['Post'],
                                     Data1[individualKey]['date'],
                                     Data1[individualKey]['confirm'],
-                                    Data1[individualKey]['pushkey']);
-                                postTeacherList.add(posts);
+                                    Data1[individualKey]['pushkey'],
+                                    Data1[individualKey]['userPhotoUrl'],
+                                    Data1[individualKey]['userName'],
+                                    Data1[individualKey]['userId'],
+                                    Data1[individualKey]['category']);
+                                if (Data1[individualKey]['confirm'] == 'Yes') {
+                                  postTeacherList.add(posts);
+                                }
                               }
 
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: postTeacherList.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    //alignment: Alignment.center,
-                                    margin: EdgeInsets.only(left: 4),
-                                    width: width / 1.5,
-                                    //height: height / 5,
-                                    child: Card(
-                                      child: ListTile(
-                                        title: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, bottom: 5),
-                                          child: Text(
-                                            '${postTeacherList[index].title}',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        subtitle: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 5),
-                                          child: Text(
-                                            '${postTeacherList[index].post}',
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900),
-                                          ),
-                                        ),
+                              return postTeacherList.length == 0
+                                  ? Center(
+                                      child: Card(
+                                        elevation: 5.0,
+                                        child: Container(
+                                            padding: EdgeInsets.all(4),
+                                            height: height / 7,
+                                            width: width / 2,
+                                            child: Center(
+                                                child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                        "assests/emptypost.png"),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 4,
+                                                ),
+                                                Text(
+                                                  'No Recent Posts in this category!',
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      fontFamily: 'coiny',
+                                                      color: Colors.black26),
+                                                )
+                                              ],
+                                            ))),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
+                                    )
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: postTeacherList.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          width: width / 1.5,
+                                          child: Card(
+                                            child: Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3.0),
+                                                      child: postTeacherList[
+                                                                      index]
+                                                                  .userPhotoUrl ==
+                                                              null
+                                                          ? Icon(
+                                                              Icons.person,
+                                                              color: Colors
+                                                                  .purple[100],
+                                                            )
+                                                          : CircleAvatar(
+                                                              backgroundImage: NetworkImage(
+                                                                  postTeacherList[
+                                                                          index]
+                                                                      .userPhotoUrl),
+                                                            ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(4.0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          10.0,
+                                                                      top: 8),
+                                                              child: Text(
+                                                                '${postTeacherList[index].userName}',
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8.0),
+                                                              child: Text(
+                                                                '${postTeacherList[index].title}',
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                maxLines: 3,
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black87),
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              '${postTeacherList[index].post}',
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black87),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Spacer(),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      // Expanded(
+                                                      //   child:
+                                                      // ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          '${postTeacherList[index].date}',
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
                             } else {
                               return Center(
                                 child: Card(
+                                  elevation: 5.0,
                                   child: Container(
-                                    height: height / 7,
-                                    width: width / 2,
-                                    child: Center(
-                                        child: Text(
-                                      'No Recent Posts',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: 'coiny',
-                                          color: Colors.black87),
-                                    )),
-                                  ),
+                                      padding: EdgeInsets.all(4),
+                                      height: height / 7,
+                                      width: width / 2,
+                                      child: Center(
+                                          child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "assests/emptypost.png"),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            'No Recent Posts in this category!',
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                fontFamily: 'coiny',
+                                                color: Colors.black26),
+                                          )
+                                        ],
+                                      ))),
                                 ),
                               );
                             }
+                          } else {
+                            return Center(
+                              child: Card(
+                                elevation: 5.0,
+                                child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    height: height / 7,
+                                    width: width / 2,
+                                    child: Center(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Image(
+                                            image: AssetImage(
+                                                "assests/emptypost.png"),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        Text(
+                                          'No Recent Posts in this category!',
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              fontFamily: 'coiny',
+                                              color: Colors.black26),
+                                        )
+                                      ],
+                                    ))),
+                              ),
+                            );
                           }
                           return loaderWaveComment();
                         },
@@ -345,8 +710,9 @@ class HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'coiny')),
-                          backgroundColor: Colors.white,
+                                  fontFamily: 'coiny',
+                                  color: Colors.black54)),
+                          backgroundColor: Colors.blue[200],
                         ),
                         onTap: () {
                           Navigator.push(
@@ -363,9 +729,8 @@ class HomePageState extends State<HomePage> {
                         future: FirebaseDatabase.instance
                             .reference()
                             .child("Posts")
-                            .child('Doctor')
-                            .orderByChild('confirm')
-                            .equalTo('Yes')
+                            .orderByChild('category')
+                            .equalTo('Doctor')
                             .once(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
@@ -381,66 +746,208 @@ class HomePageState extends State<HomePage> {
                                     Data1[individualKey]['Post'],
                                     Data1[individualKey]['date'],
                                     Data1[individualKey]['confirm'],
-                                    Data1[individualKey]['pushkey']);
+                                    Data1[individualKey]['pushkey'],
+                                    Data1[individualKey]['userPhotoUrl'],
+                                    Data1[individualKey]['userName'],
+                                    Data1[individualKey]['userId'],
+                                    Data1[individualKey]['category']);
                                 if (Data1[individualKey]['confirm'] == 'Yes') {
                                   postDoctorList.add(posts);
                                 }
                               }
 
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: postDoctorList.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    //alignment: Alignment.center,
-                                    margin: EdgeInsets.only(left: 4),
-                                    width: width / 1.5,
-                                    //height: height / 5,
-                                    child: Card(
-                                      child: ListTile(
-                                        title: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, bottom: 5),
-                                          child: Text(
-                                            '${postDoctorList[index].title}',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        subtitle: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 5),
-                                          child: Text(
-                                            '${postDoctorList[index].post}',
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900),
-                                          ),
-                                        ),
+                              return postDoctorList.length == 0
+                                  ? Center(
+                                      child: Card(
+                                        elevation: 5.0,
+                                        child: Container(
+                                            padding: EdgeInsets.all(4),
+                                            height: height / 7,
+                                            width: width / 2,
+                                            child: Center(
+                                                child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                        "assests/emptypost.png"),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 4,
+                                                ),
+                                                Text(
+                                                  'No Recent Posts in this category!',
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      fontFamily: 'coiny',
+                                                      color: Colors.black26),
+                                                )
+                                              ],
+                                            ))),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
+                                    )
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: postDoctorList.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          width: width / 1.5,
+                                          child: Card(
+                                            child: Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3.0),
+                                                      child: postDoctorList[
+                                                                      index]
+                                                                  .userPhotoUrl ==
+                                                              null
+                                                          ? Icon(
+                                                              Icons.person,
+                                                              color: Colors
+                                                                  .purple[100],
+                                                            )
+                                                          : CircleAvatar(
+                                                              backgroundImage: NetworkImage(
+                                                                  postDoctorList[
+                                                                          index]
+                                                                      .userPhotoUrl),
+                                                            ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(4.0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          10.0,
+                                                                      top: 8),
+                                                              child: Text(
+                                                                '${postDoctorList[index].userName}',
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8.0),
+                                                              child: Text(
+                                                                '${postDoctorList[index].title}',
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                maxLines: 3,
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black87),
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              '${postDoctorList[index].post}',
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black87),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Spacer(),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      // Expanded(
+                                                      //   child:
+                                                      // ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          '${postDoctorList[index].date}',
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
                             } else {
                               return Center(
                                 child: Card(
+                                  elevation: 5.0,
                                   child: Container(
-                                    height: height / 7,
-                                    width: width / 2,
-                                    child: Center(
-                                        child: Text(
-                                      'No Recent Posts',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: 'coiny',
-                                          color: Colors.black87),
-                                    )),
-                                  ),
+                                      padding: EdgeInsets.all(4),
+                                      height: height / 7,
+                                      width: width / 2,
+                                      child: Center(
+                                          child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "assests/emptypost.png"),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            'No Recent Posts in this category!',
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                fontFamily: 'coiny',
+                                                color: Colors.black26),
+                                          )
+                                        ],
+                                      ))),
                                 ),
                               );
                             }
@@ -457,8 +964,9 @@ class HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'coiny')),
-                          backgroundColor: Colors.white,
+                                  fontFamily: 'coiny',
+                                  color: Colors.black54)),
+                          backgroundColor: Colors.blue[200],
                         ),
                         onTap: () {
                           Navigator.push(
@@ -475,9 +983,8 @@ class HomePageState extends State<HomePage> {
                         future: FirebaseDatabase.instance
                             .reference()
                             .child("Posts")
-                            .child('Nurse')
-                            .orderByChild('confirm')
-                            .equalTo('Yes')
+                            .orderByChild('category')
+                            .equalTo('Nurse')
                             .once(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
@@ -493,67 +1000,246 @@ class HomePageState extends State<HomePage> {
                                     Data1[individualKey]['Post'],
                                     Data1[individualKey]['date'],
                                     Data1[individualKey]['confirm'],
-                                    Data1[individualKey]['pushkey']);
-                                postNurseList.add(posts);
+                                    Data1[individualKey]['pushkey'],
+                                    Data1[individualKey]['userPhotoUrl'],
+                                    Data1[individualKey]['userName'],
+                                    Data1[individualKey]['userId'],
+                                    Data1[individualKey]['category']);
+                                if (Data1[individualKey]['confirm'] == 'Yes') {
+                                  postNurseList.add(posts);
+                                }
                               }
 
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: postNurseList.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    //alignment: Alignment.center,
-                                    margin: EdgeInsets.only(left: 4),
-                                    width: width / 1.5,
-                                    //height: height / 5,
-                                    child: Card(
-                                      child: ListTile(
-                                        title: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, bottom: 5),
-                                          child: Text(
-                                            '${postNurseList[index].title}',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        subtitle: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 5),
-                                          child: Text(
-                                            '${postNurseList[index].post}',
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900),
-                                          ),
-                                        ),
+                              return postNurseList.length == 0
+                                  ? Center(
+                                      child: Card(
+                                        elevation: 5.0,
+                                        child: Container(
+                                            padding: EdgeInsets.all(4),
+                                            height: height / 7,
+                                            width: width / 2,
+                                            child: Center(
+                                                child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                        "assests/emptypost.png"),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 4,
+                                                ),
+                                                Text(
+                                                  'No Recent Posts in this category!',
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      fontFamily: 'coiny',
+                                                      color: Colors.black26),
+                                                )
+                                              ],
+                                            ))),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
+                                    )
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: postNurseList.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          width: width / 1.5,
+                                          child: Card(
+                                            child: Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3.0),
+                                                      child: postNurseList[
+                                                                      index]
+                                                                  .userPhotoUrl ==
+                                                              null
+                                                          ? Icon(
+                                                              Icons.person,
+                                                              color: Colors
+                                                                  .purple[100],
+                                                            )
+                                                          : CircleAvatar(
+                                                              backgroundImage: NetworkImage(
+                                                                  postNurseList[
+                                                                          index]
+                                                                      .userPhotoUrl),
+                                                            ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(4.0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          10.0,
+                                                                      top: 8),
+                                                              child: Text(
+                                                                '${postNurseList[index].userName}',
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8.0),
+                                                              child: Text(
+                                                                '${postNurseList[index].title}',
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                maxLines: 3,
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .black87),
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              '${postNurseList[index].post}',
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black87),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Spacer(),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      // Expanded(
+                                                      //   child:
+                                                      // ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          '${postNurseList[index].date}',
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
                             } else {
                               return Center(
                                 child: Card(
+                                  elevation: 5.0,
                                   child: Container(
-                                    height: height / 7,
-                                    width: width / 2,
-                                    child: Center(
-                                        child: Text(
-                                      'No Recent Posts',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: 'coiny',
-                                          color: Colors.black87),
-                                    )),
-                                  ),
+                                      padding: EdgeInsets.all(4),
+                                      height: height / 7,
+                                      width: width / 2,
+                                      child: Center(
+                                          child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "assests/emptypost.png"),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            'No Recent Posts in this category!',
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                fontFamily: 'coiny',
+                                                color: Colors.black26),
+                                          )
+                                        ],
+                                      ))),
                                 ),
                               );
                             }
+                          } else {
+                            return Center(
+                              child: Card(
+                                elevation: 5.0,
+                                child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    height: height / 7,
+                                    width: width / 2,
+                                    child: Center(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Image(
+                                            image: AssetImage(
+                                                "assests/emptypost.png"),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        Text(
+                                          'No Recent Posts in this category!',
+                                          style: TextStyle(
+                                              fontSize: 11,
+                                              fontFamily: 'coiny',
+                                              color: Colors.black26),
+                                        )
+                                      ],
+                                    ))),
+                              ),
+                            );
                           }
                           return loaderWaveComment();
                         },
@@ -609,7 +1295,7 @@ class HomePageState extends State<HomePage> {
                       fontFamily: 'coiny',
                       color: Colors.white),
                 ),
-                color: Colors.purple[300],
+                color: Colors.blue[300],
                 onPressed: () {
                   setState(() {
                     data.changeLocale(Locale('en', 'US'));
@@ -627,7 +1313,7 @@ class HomePageState extends State<HomePage> {
                       fontFamily: 'coiny',
                       color: Colors.white),
                 ),
-                color: Colors.purple[300],
+                color: Colors.blue[300],
                 onPressed: () {
                   setState(() {
                     data.changeLocale(Locale('si', 'SL'));
@@ -645,7 +1331,7 @@ class HomePageState extends State<HomePage> {
                       fontFamily: 'coiny',
                       color: Colors.white),
                 ),
-                color: Colors.purple[300],
+                color: Colors.blue[300],
                 onPressed: () {},
               ),
             ],

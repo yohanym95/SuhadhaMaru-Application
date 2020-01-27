@@ -58,6 +58,7 @@ flutter:
    - assests/google_logo.png
    - assests/Facebook_Logo.png
    - assests/peopletransfer.jpg
+   - assests/emptypost.png
    - assests/lang/en-US.json
    - assests/lang/si-SL.json
 

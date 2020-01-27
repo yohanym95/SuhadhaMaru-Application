@@ -1,6 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/logic/auth.dart';
@@ -32,34 +31,42 @@ class LoginState extends State<Login> {
       }
 
       database.once().then((DataSnapshot data) {
-        var Data1 = data.value.keys;
+        if (data.value == null) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Profile()),
+            (Route<dynamic> route) => false,
+          );
+        } else {
+          var Data1 = data.value.keys;
 
-        print(Data1);
+          print(Data1);
 
-        for (var key in Data1) {
-          if (key == uid) {
-            // setState(() async {
-            //   _isLoading = false;
-            // });
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-              (Route<dynamic> route) => false,
-            );
+          for (var key in Data1) {
+            if (key == uid) {
+              // setState(() async {
+              //   _isLoading = false;
+              // });
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+                (Route<dynamic> route) => false,
+              );
 
-            print('homepage');
-            break;
-          } else {
-            // setState(() async {
-            //   _isLoading = false;
-            // });
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Profile()),
-              (Route<dynamic> route) => false,
-            );
+              print('homepage');
+              break;
+            } else {
+              // setState(() async {
+              //   _isLoading = false;
+              // });
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => Profile()),
+                (Route<dynamic> route) => false,
+              );
 
-            print('profile');
+              print('profile');
+            }
           }
         }
       });
@@ -82,8 +89,9 @@ class LoginState extends State<Login> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login',style: TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.purple[300],
+        title: Text('Login',
+            style: TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.blue[300],
       ),
       body: ModalProgressHUD(
         inAsyncCall: _isLoading,
@@ -106,7 +114,7 @@ class LoginState extends State<Login> {
                           validator: validateEmail1,
                           decoration: InputDecoration(
                               labelText: 'Email',
-                              focusColor: Colors.purple,
+                              focusColor: Colors.blue,
                               labelStyle: TextStyle(
                                   fontSize: 18.0, color: Colors.black),
                               prefixIcon: Icon(Icons.person),
@@ -135,7 +143,7 @@ class LoginState extends State<Login> {
                           },
                           decoration: InputDecoration(
                               labelText: 'Password',
-                              focusColor: Colors.purple,
+                              focusColor: Colors.blue,
                               labelStyle: TextStyle(
                                   fontSize: 18.0, color: Colors.black),
                               prefixIcon: Icon(Icons.person),
@@ -170,7 +178,7 @@ class LoginState extends State<Login> {
                           });
                         }
                       },
-                      color: Colors.purple[300],
+                      color: Colors.blue[300],
                     ),
                   ),
                   Container(

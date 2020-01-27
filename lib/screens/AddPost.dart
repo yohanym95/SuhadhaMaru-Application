@@ -4,31 +4,41 @@ import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:suhadhamaru/logic/PostDetails.dart';
 import 'package:suhadhamaru/logic/auth.dart';
-import 'package:suhadhamaru/logic/userProfile.dart';
-import 'package:suhadhamaru/main.dart';
 
 class Post extends StatefulWidget {
+  String category;
+
+  Post(this.category);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return PostState();
+    return PostState(this.category);
   }
 }
 
 class PostState extends State<Post> {
-  var _currencies = ['Police', 'Teacher', 'University'];
-  var currencyValue = 'Police';
+  String category;
 
   DatabaseReference database = FirebaseDatabase.instance.reference();
 
   TextEditingController titleController = TextEditingController();
   TextEditingController postController = TextEditingController();
 
-  String userId;
+  String uId = userId;
   bool _isLoading = false;
 
   final homeScaffoldKey = new GlobalKey<ScaffoldState>();
   var _formKey = GlobalKey<FormState>();
+  String userPhotoUrl = imageUrl;
+  String userName = name;
+
+  PostState(this.category);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(userPhotoUrl);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +46,7 @@ class PostState extends State<Post> {
     return Scaffold(
         key: homeScaffoldKey,
         appBar: AppBar(
-          backgroundColor: Colors.purple[300],
+          backgroundColor: Colors.blue[300],
           title: Text('Add Post',
               style:
                   TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
@@ -50,41 +60,6 @@ class PostState extends State<Post> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                              flex: 1,
-                              child: Text(
-                                'Category',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 15),
-                              )),
-                          Expanded(
-                            flex: 4,
-                            child: Card(
-                              child: DropdownButton<String>(
-                                isExpanded: true,
-                                items: _currencies
-                                    .map((String dropDownStringItem) {
-                                  return DropdownMenuItem<String>(
-                                      value: dropDownStringItem,
-                                      child: Text(
-                                        dropDownStringItem,
-                                        textAlign: TextAlign.center,
-                                      ));
-                                }).toList(),
-                                onChanged: (String dropdownitem) {
-                                  onClickedItem(dropdownitem);
-                                },
-                                value: currencyValue,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                     Container(
                       child: Padding(
                           padding: EdgeInsets.all(5),
@@ -157,7 +132,7 @@ class PostState extends State<Post> {
                             savePost(homeScaffoldKey.currentState, context);
                           }
                         },
-                        color: Colors.purple[300],
+                        color: Colors.blue[300],
                       ),
                     ),
                   ],
@@ -168,12 +143,12 @@ class PostState extends State<Post> {
         ));
   }
 
-  void onClickedItem(String dropdownitem) {
-    setState(() {
-      this.currencyValue = dropdownitem;
-      print(this.currencyValue);
-    });
-  }
+  // void onClickedItem(String dropdownitem) {
+  //   setState(() {
+  //     this.currencyValue = dropdownitem;
+  //     print(this.currencyValue);
+  //   });
+  // }
 
   Future<void> savePost(ScaffoldState scaffold, BuildContext context) async {
     String key = database.child("Post").push().key;
@@ -183,15 +158,16 @@ class PostState extends State<Post> {
     var post = <String, dynamic>{
       'title': titleController.text,
       'Post': postController.text,
-      'category': this.currencyValue,
+      'category': category,
       'date': date,
       'confirm': 'No',
-      'pushkey': key
+      'pushkey': key,
+      'userPhotoUrl': userPhotoUrl,
+      'userName': userName,
+      'userId':uId
     };
 
-    return PostDetails()
-        .addPost(post, this.currencyValue, context, key)
-        .then((onValue) {
+    return PostDetails().addPost(post, context, key).then((onValue) {
       setState(() {
         _isLoading = onValue;
       });
@@ -200,7 +176,7 @@ class PostState extends State<Post> {
       ));
       titleController.clear();
       postController.clear();
-     // Navigator.pop(context, true);
+      // Navigator.pop(context, true);
     }).catchError((onError) {
       setState(() {
         _isLoading = false;
