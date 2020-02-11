@@ -1,9 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/model/Post.dart';
 import 'package:suhadhamaru/model/ProfileDetail.dart';
-import 'package:suhadhamaru/screens/Comments.dart';
+import 'package:suhadhamaru/screens/Post/Comments.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -23,12 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // getProfileDetails();
-    // if (values != null) {
-    //   isLoad = false;
-    // } else {
-    //   isLoad = true;
-    // }
+    
     print('userid::::  ' + userId);
   }
 
@@ -36,12 +32,17 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Profile'),
-        ),
-        body: Container(
-          child: Center(
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
+      data: data,
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('Profile',
+                style: TextStyle(
+                    fontFamily: 'coiny', fontWeight: FontWeight.bold)),
+          ),
+          body: Container(
+            color: Colors.blue[50],
             child: Column(
               children: <Widget>[
                 Expanded(
@@ -58,130 +59,168 @@ class _ProfilePageState extends State<ProfilePage> {
                             (BuildContext context, AsyncSnapshot snapshot) {
                           if (snapshot.hasData) {
                             // return Text('${snapshot.data.value['photoUrl']}');
-                            return Card(
+                            return Container(
                               color: Colors.blue[50],
                               child: Center(
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       right: 20, left: 20),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              snapshot.data.value['photoUrl']),
-                                          radius: 50,
-                                          backgroundColor: Colors.transparent,
-                                        ),
-                                      ),
-                                      Container(
+                                      Expanded(
+                                        flex: 1,
                                         child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 10,
-                                              right: 10,
-                                              top: 15,
-                                              bottom: 5),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 1,
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(5),
-                                                  child: Text(
-                                                    'Name',
-                                                    style: TextStyle(
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.black54),
-                                                  ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                  flex: 3,
-                                                  child: Text(
-                                                      ': ${snapshot.data.value['fullName']}',
-                                                      style: TextStyle(
-                                                          fontSize: 17,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black)))
-                                            ],
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: CircleAvatar(
+                                            radius: 35,
+                                            backgroundImage: NetworkImage(
+                                                snapshot
+                                                    .data.value['photoUrl']),
+                                            backgroundColor: Colors.transparent,
                                           ),
                                         ),
                                       ),
-                                      Container(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 10,
-                                              right: 10,
-                                              top: 5,
-                                              bottom: 5),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 1,
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(5),
-                                                  child: Text('Email',
-                                                      style: TextStyle(
-                                                          fontSize: 17,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color:
-                                                              Colors.black54)),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 10,
+                                                    right: 10,
+                                                    top: 15,
+                                                    bottom: 5),
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Text(
+                                                          AppLocalizations.of(
+                                                                  context)
+                                                              .tr('homePage.profilePage.name'),
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color: Colors
+                                                                  .black54),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 3,
+                                                        child: Text(
+                                                            ': ${snapshot.data.value['fullName']}',
+                                                            style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black)))
+                                                  ],
                                                 ),
                                               ),
-                                              Expanded(
-                                                  flex: 3,
-                                                  child: Text(
-                                                      ': ${snapshot.data.value['email']}',
-                                                      style: TextStyle(
-                                                          fontSize: 17,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black)))
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 10,
-                                              right: 10,
-                                              top: 5,
-                                              bottom: 5),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                flex: 1,
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(5),
-                                                  child: Text('City',
-                                                      style: TextStyle(
-                                                          fontSize: 17,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color:
-                                                              Colors.black54)),
+                                            ),
+                                            Container(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 10,
+                                                    right: 10,
+                                                    top: 5,
+                                                    bottom: 5),
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Text(
+                                                            AppLocalizations.of(
+                                                                    context)
+                                                                .tr(
+                                                                    'homePage.profilePage.email'),
+                                                            style: TextStyle(
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black54)),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 3,
+                                                        child: Text(
+                                                            ': ${snapshot.data.value['email']}',
+                                                            style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black)))
+                                                  ],
                                                 ),
                                               ),
-                                              Expanded(
-                                                  flex: 3,
-                                                  child: Text(
-                                                      ': ${snapshot.data.value['currentCity']}',
-                                                      style: TextStyle(
-                                                          fontSize: 17,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black)))
-                                            ],
-                                          ),
+                                            ),
+                                            Container(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 10,
+                                                    right: 10,
+                                                    top: 5,
+                                                    bottom: 5),
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(5),
+                                                        child: Text(
+                                                            AppLocalizations.of(
+                                                                    context)
+                                                                .tr(
+                                                                    'homePage.profilePage.city'),
+                                                            style: TextStyle(
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black54)),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 3,
+                                                        child: Text(
+                                                            ': ${snapshot.data.value['currentCity']}',
+                                                            style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black)))
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -208,14 +247,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       )),
                 ),
                 Container(
-                  child: Text('My Posts',
+                  child: Text(
+                      AppLocalizations.of(context)
+                          .tr('homePage.profilePage.mypost'),
                       style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
                           color: Colors.black54)),
                 ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(
                       child: Center(
                     child: FutureBuilder(
@@ -319,8 +360,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   Widget postsUI(
@@ -340,7 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
       review = 'Reviewing';
     }
     return new Card(
-      color: Colors.blue[50],
+      color: Colors.white,
       elevation: 10.0,
       margin: EdgeInsets.all(10.0),
       child: Container(
@@ -437,14 +478,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     ? new Text(
                         review,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20,
-                            color: Colors.blue),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.green),
                         textAlign: TextAlign.center,
                       )
                     : new Text(
                         review,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
                             color: Colors.red),
                         textAlign: TextAlign.center,
                       ),

@@ -5,9 +5,30 @@
         }
     },
     "appBarTitle": "සුහඳ මාරු",
-    "homePage":{
-        "languageDialog":{
-            "title":"භාෂාව තෝරගන්න"
+    "homePage": {
+        "languageDialog": {
+            "title": "භාෂාව තෝරගන්න"
+        },
+        "navigateDrawer": {
+            "language": "භාෂාව",
+            "logout": "ඉවත් වන්න",
+            "profile": "මගේ පැතිකඩ"
+        },
+        "categoryPage": {
+            "categories": "කාණ්ඩ",
+            "police": "පොලිසිය",
+            "doctor": "වෛද්‍යවරයා",
+            "Nurse": "හෙදිය",
+            "teacher": "ගුරුවරයා"
+        },
+        "profilePage": {
+            "mypost": "මගේ සටහන්",
+            "name": "නම",
+            "email": "විද්යුත් තැපෑල",
+            "city": "නගරය"
+        },
+        "addPostPage": {
+            "addPost": "සටහන් දැමීම"
         }
     }
 }

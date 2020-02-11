@@ -2,8 +2,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:suhadhamaru/model/Post.dart';
-import 'package:suhadhamaru/screens/AddPost.dart';
-import 'package:suhadhamaru/screens/Comments.dart';
+import 'package:suhadhamaru/screens/Post/AddPost.dart';
+import 'package:suhadhamaru/screens/Post/Comments.dart';
 
 class PostPage extends StatefulWidget {
   String category;

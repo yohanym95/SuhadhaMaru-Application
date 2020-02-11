@@ -1,9 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:suhadhamaru/screens/HomePage.dart';
 import 'package:suhadhamaru/logic/auth.dart';
-import 'package:suhadhamaru/screens/createProfile.dart';
+import 'package:suhadhamaru/screens/HomePage/Homepage1.dart';
+import 'package:suhadhamaru/screens/Profile/createProfile.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -49,7 +49,7 @@ class LoginState extends State<Login> {
               // });
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => HomePage()),
+                MaterialPageRoute(builder: (context) => HomePages()),
                 (Route<dynamic> route) => false,
               );
 
@@ -146,7 +146,7 @@ class LoginState extends State<Login> {
                               focusColor: Colors.blue,
                               labelStyle: TextStyle(
                                   fontSize: 18.0, color: Colors.black),
-                              prefixIcon: Icon(Icons.person),
+                              prefixIcon: Icon(Icons.lock_outline),
                               errorStyle: TextStyle(
                                   color: Colors.redAccent, fontSize: 15.0),
                               hintText: "Password",
@@ -195,7 +195,7 @@ class LoginState extends State<Login> {
                       )),
                     ),
                   ),
-                  //  _facebookSignInButton(),
+                  // _facebookSignInButton(),
                   // Container(
                   //   child: Padding(
                   //     padding: const EdgeInsets.all(8.0),
@@ -252,50 +252,50 @@ class LoginState extends State<Login> {
     );
   }
 
-  Widget _facebookSignInButton() {
-    return OutlineButton(
-      color: Colors.blue,
-      splashColor: Colors.blue,
-      onPressed: () {
-        setState(() {
-          _isLoading = true;
-        });
-        handleSignIn().whenComplete(() {
-          setState(() {
-            _isLoading = false;
-          });
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-            (Route<dynamic> route) => false,
-          );
-        });
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Colors.blue),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image(image: AssetImage("assests/Facebook_Logo.png"), height: 35.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                'Sign in with Facebook',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _facebookSignInButton() {
+  //   return OutlineButton(
+  //     color: Colors.blue,
+  //     splashColor: Colors.blue,
+  //     onPressed: () {
+  //       setState(() {
+  //         _isLoading = true;
+  //       });
+  //       handleSignIn().whenComplete(() {
+  //         setState(() {
+  //           _isLoading = false;
+  //         });
+  //         Navigator.pushAndRemoveUntil(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => HomePages()),
+  //           (Route<dynamic> route) => false,
+  //         );
+  //       });
+  //     },
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+  //     highlightElevation: 0,
+  //     borderSide: BorderSide(color: Colors.blue),
+  //     child: Padding(
+  //       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+  //       child: Row(
+  //         mainAxisSize: MainAxisSize.min,
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: <Widget>[
+  //           Image(image: AssetImage("assests/Facebook_Logo.png"), height: 35.0),
+  //           Padding(
+  //             padding: const EdgeInsets.only(left: 10),
+  //             child: Text(
+  //               'Sign in with Facebook',
+  //               style: TextStyle(
+  //                 fontSize: 20,
+  //                 color: Colors.grey,
+  //               ),
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   //email validation
   String validateEmail1(String value) {

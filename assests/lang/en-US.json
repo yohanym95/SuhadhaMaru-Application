@@ -5,9 +5,30 @@
         }
     },
     "appBarTitle": "Suhadha Maru",
-    "homePage":{
-        "languageDialog":{
-            "title":"Select the language"
+    "homePage": {
+        "languageDialog": {
+            "title": "Select the language"
+        },
+        "navigateDrawer": {
+            "language": "Language",
+            "logout": "Logout",
+            "profile": "My Profile"
+        },
+        "categoryPage": {
+            "categories": "Categories",
+            "police": "Police",
+            "doctor": "Doctor",
+            "Nurse": "Nurse",
+            "teacher": "Teacher"
+        },
+        "profilePage": {
+            "mypost": "My Posts",
+            "name": "Name",
+            "email": "Email",
+            "city": "City"
+        },
+        "addPostPage": {
+            "addPost": "Add Post"
         }
     }
 }

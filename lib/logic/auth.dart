@@ -19,7 +19,7 @@ Future<FirebaseUser> signIn(String email, String password) async {
   FirebaseUser user = result.user;
 
   return user;
-} 
+}
 
 Future<void> signOut() async {
   // TODO: implement signOut
@@ -92,11 +92,20 @@ Future<Null> logOut() async {
 Future<int> handleSignIn() async {
   FacebookLoginResult facebookLoginResult = await handleFBSignIn();
   final accessToken = facebookLoginResult.accessToken.token;
+  print('access'+accessToken);
   if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
     final facebookAuthCred =
         FacebookAuthProvider.getCredential(accessToken: accessToken);
     final user = await _auth.signInWithCredential(facebookAuthCred);
     print("User : " + user.user.displayName);
+    name = user.user.displayName;
+    imageUrl = user.user.photoUrl;
+    email = user.user.email;
+    userId = user.user.uid;
+    print(name);
+    print(imageUrl);
+    print(email);
+    print(userId);
     return 1;
   } else
     return 0;

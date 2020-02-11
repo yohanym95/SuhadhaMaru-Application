@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:suhadhamaru/screens/login.dart';
-import 'package:suhadhamaru/screens/signup.dart';
+import 'package:suhadhamaru/screens/login/login.dart';
+import 'package:suhadhamaru/screens/login/signup.dart';
 
 class MyHomePage extends StatefulWidget {
   // MyHomePage({Key key, this.title}) : super(key: key);

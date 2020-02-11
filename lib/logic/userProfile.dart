@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:suhadhamaru/screens/HomePage.dart';
+import 'package:suhadhamaru/screens/HomePage/Homepage1.dart';
 
 class UserManagement {
   Future<bool> addData(userData, userId, context) async {
@@ -12,7 +12,7 @@ class UserManagement {
         .then((onValue) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => HomePages()),
         (Route<dynamic> route) => false,
       );
       return false;

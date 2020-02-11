@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:suhadhamaru/logic/auth.dart';
-import 'package:suhadhamaru/screens/createProfile.dart';
+import 'package:suhadhamaru/screens/Profile/createProfile.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -77,7 +77,7 @@ class SignUpState extends State<SignUp> {
                             focusColor: Colors.blue,
                             labelStyle:
                                 TextStyle(fontSize: 18.0, color: Colors.black),
-                            prefixIcon: Icon(Icons.no_encryption),
+                            prefixIcon: Icon(Icons.lock_outline),
                             errorStyle: TextStyle(
                                 color: Colors.redAccent, fontSize: 15.0),
                             hintText: "Password",
