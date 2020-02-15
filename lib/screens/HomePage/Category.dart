@@ -58,7 +58,7 @@ class _CategoriesState extends State<Categories> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PostPage('Police')),
+                    MaterialPageRoute(builder: (context) => PostPage('police')),
                   );
                 },
               ),
@@ -92,7 +92,7 @@ class _CategoriesState extends State<Categories> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PostPage('Doctor')),
+                    MaterialPageRoute(builder: (context) => PostPage('doctor')),
                   );
                 },
               ),
@@ -126,7 +126,7 @@ class _CategoriesState extends State<Categories> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PostPage('Teacher')),
+                        builder: (context) => PostPage('teacher')),
                   );
                 },
               ),
@@ -159,7 +159,7 @@ class _CategoriesState extends State<Categories> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PostPage('Nurse')),
+                    MaterialPageRoute(builder: (context) => PostPage('nurse')),
                   );
                 },
               ),
