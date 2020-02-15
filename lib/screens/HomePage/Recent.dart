@@ -7,6 +7,7 @@ import 'package:suhadhamaru/screens/Post/Comments.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/Profile/Profile.dart';
 import 'package:suhadhamaru/utils/DialogTrigger.dart';
+import 'package:suhadhamaru/utils/PostUI.dart';
 import 'package:suhadhamaru/utils/ovalrightborderclipper.dart';
 
 class Recent extends StatefulWidget {
@@ -23,44 +24,44 @@ class _RecentState extends State<Recent> {
   //list for get recent posts data
   List<Posts> postList = [];
   //fecth data for search bar - list
-  final category = [];
+  // final category = [];
 
-  //fecth recent view data for search bar - list
-  final recentCatagory = [];
+  // //fecth recent view data for search bar - list
+  // final recentCatagory = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    DatabaseReference database =
-        FirebaseDatabase.instance.reference().child("Posts");
-    database.once().then((DataSnapshot data) {
-      var keys = data.value.keys;
-      var Data1 = data.value;
-      postList.clear();
-      for (var individualKey in keys) {
-        Posts posts = new Posts(
-            Data1[individualKey]['title'],
-            Data1[individualKey]['Post'],
-            Data1[individualKey]['date'],
-            Data1[individualKey]['confirm'],
-            Data1[individualKey]['pushkey'],
-            Data1[individualKey]['userPhotoUrl'],
-            Data1[individualKey]['userName'],
-            Data1[individualKey]['userId'],
-            Data1[individualKey]['category']);
+    // DatabaseReference database =
+    //     FirebaseDatabase.instance.reference().child("Posts");
+    // database.once().then((DataSnapshot data) {
+    //   var keys = data.value.keys;
+    //   var Data1 = data.value;
+    //   postList.clear();
+    //   for (var individualKey in keys) {
+    //     Posts posts = new Posts(
+    //         Data1[individualKey]['title'],
+    //         Data1[individualKey]['Post'],
+    //         Data1[individualKey]['date'],
+    //         Data1[individualKey]['confirm'],
+    //         Data1[individualKey]['pushkey'],
+    //         Data1[individualKey]['userPhotoUrl'],
+    //         Data1[individualKey]['userName'],
+    //         Data1[individualKey]['userId'],
+    //         Data1[individualKey]['category']);
 
-        if (Data1[individualKey]['confirm'] == "Yes") {
-          postList.add(posts);
-          // category.add(value)
+    //     if (Data1[individualKey]['confirm'] == "Yes") {
+    //       postList.add(posts);
+    //       // category.add(value)
 
-        }
-      }
-      setState(() {
-        print(postList.length);
-      });
-    });
+    //     }
+    //   }
+    //   setState(() {
+    //     print(postList.length);
+    //   });
+    // });
   }
 
   @override
@@ -80,9 +81,7 @@ class _RecentState extends State<Recent> {
             IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
-                showSearch(
-                    context: context,
-                    delegate: DataSearch(category, recentCatagory));
+                showSearch(context: context, delegate: DataSearch());
               },
             )
           ],
@@ -159,7 +158,8 @@ class _RecentState extends State<Recent> {
                                 postList[index].date,
                                 postList[index].pushkey,
                                 postList[index].userName,
-                                postList[index].userPhotoUrl);
+                                postList[index].userPhotoUrl,
+                                context);
                           },
                         );
                 } else {
@@ -206,105 +206,6 @@ class _RecentState extends State<Recent> {
           ),
         )),
       ),
-    );
-  }
-
-  Widget postsUI(String title, String description, String date, String key,
-      String userName, String userPhotoUrl) {
-    return new Card(
-      color: Colors.white,
-      elevation: 10.0,
-      margin: EdgeInsets.all(10.0),
-      child: Container(
-          padding: EdgeInsets.all(5),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: userPhotoUrl == null
-                    ? Icon(
-                        Icons.person,
-                        color: Colors.blue[100],
-                      )
-                    : CircleAvatar(
-                        backgroundImage: NetworkImage(userPhotoUrl),
-                      ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(3),
-                        child: new Text(
-                          userName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 19),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(3),
-                        child: new Text(
-                          title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Container(
-                          margin: EdgeInsets.all(3),
-                          child: new Text(description,
-                              style: TextStyle(color: Colors.black87))),
-                      // Container(
-                      //     margin: EdgeInsets.all(2),
-                      //     child: new Text(date,
-                      //         style: Theme.of(context).textTheme.subtitle)),
-                      // Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                date,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Expanded(
-                                flex: 1,
-                                child: GestureDetector(
-                                  child: Icon(Icons.comment),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Comments(
-                                            key,
-                                            'category',
-                                            userPhotoUrl,
-                                            userName,
-                                            title,
-                                            description,
-                                            date),
-                                      ),
-                                    );
-                                  },
-                                ))
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          )),
     );
   }
 
