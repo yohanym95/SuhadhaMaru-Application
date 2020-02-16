@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/login/LoginHome.dart';
 
-Future<bool> dialogTrigger(
-    BuildContext context) async {
+Future<bool> dialogTrigger(BuildContext context) async {
   return showDialog(
       context: context,
       barrierDismissible: false,
@@ -26,6 +25,7 @@ Future<bool> dialogTrigger(
               child: Text('Yes'),
               textColor: Colors.blue,
               onPressed: () {
+                signOutGoogle();
                 signOut().then((onValue) {
                   Navigator.pushAndRemoveUntil(
                     context,
@@ -39,3 +39,5 @@ Future<bool> dialogTrigger(
         );
       });
 }
+
+

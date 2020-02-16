@@ -1,5 +1,5 @@
 class ProfileDetails {
-  String fullName,email,category,currentCity,photoUrl;
+  String fullName,email,currentCity,photoUrl;
 
-  ProfileDetails(this.fullName,this.email,this.category,this.currentCity,this.photoUrl);
+  ProfileDetails(this.fullName,this.email,this.currentCity,this.photoUrl);
 }

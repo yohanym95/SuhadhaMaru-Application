@@ -24,7 +24,9 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+    getCurrentUser().then((user) {
+      uId = user.uid;
+    });
     print('userid::::  ' + userId);
   }
 
@@ -53,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         future: FirebaseDatabase.instance
                             .reference()
                             .child('Users')
-                            .child(userId)
+                            .child(uId)
                             .once(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {

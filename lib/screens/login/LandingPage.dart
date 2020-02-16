@@ -36,17 +36,28 @@ class LandingPageState extends State<LandingPage> {
         } else {
           return Scaffold(body: loaderWaveComment());
         }
-        // return Scaffold(body: loaderWaveComment());
       },
     );
   }
 
   Widget loaderWaveComment() {
-    return Center(
-      child: SpinKitWave(
-        color: Colors.blue,
-        size: 50.0,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Center(
+          child: SpinKitCircle(
+            color: Colors.blue,
+            size: 50.0,
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Center(
+          child: Text('Loading....'),
+        ),
+      ],
     );
   }
 

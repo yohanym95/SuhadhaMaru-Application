@@ -4,12 +4,12 @@
     <item android:drawable="@android:color/white" />
 
     <!-- You can insert your own image assets here -->
-    <item name="android:windowBackground">
+    <!-- <item name="android:windowBackground">
         <bitmap
             android:gravity="center"
             android:src="@drawable/peopletransfer" />
 
 
-    </item>
+    </item> -->
 
 </layer-list>

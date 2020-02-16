@@ -92,7 +92,7 @@ Future<Null> logOut() async {
 Future<int> handleSignIn() async {
   FacebookLoginResult facebookLoginResult = await handleFBSignIn();
   final accessToken = facebookLoginResult.accessToken.token;
-  print('access'+accessToken);
+  print('access' + accessToken);
   if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
     final facebookAuthCred =
         FacebookAuthProvider.getCredential(accessToken: accessToken);

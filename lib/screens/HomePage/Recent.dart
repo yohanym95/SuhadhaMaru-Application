@@ -3,9 +3,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:suhadhamaru/logic/searchOption.dart';
 import 'package:suhadhamaru/model/Post.dart';
+import 'package:suhadhamaru/model/ProfileDetail.dart';
 import 'package:suhadhamaru/screens/Post/Comments.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/Profile/Profile.dart';
+import 'package:suhadhamaru/screens/Profile/createProfile.dart';
 import 'package:suhadhamaru/utils/DialogTrigger.dart';
 import 'package:suhadhamaru/utils/PostUI.dart';
 import 'package:suhadhamaru/utils/ovalrightborderclipper.dart';
@@ -20,48 +22,64 @@ class _RecentState extends State<Recent> {
   String url = imageUrl;
   String name1 = name;
   String email1 = email;
+  String uid;
 
   //list for get recent posts data
   List<Posts> postList = [];
-  //fecth data for search bar - list
-  // final category = [];
-
-  // //fecth recent view data for search bar - list
-  // final recentCatagory = [];
+  //list for get user profile data
+  List<ProfileDetails> profileData = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    // DatabaseReference database =
-    //     FirebaseDatabase.instance.reference().child("Posts");
-    // database.once().then((DataSnapshot data) {
-    //   var keys = data.value.keys;
-    //   var Data1 = data.value;
-    //   postList.clear();
-    //   for (var individualKey in keys) {
-    //     Posts posts = new Posts(
-    //         Data1[individualKey]['title'],
-    //         Data1[individualKey]['Post'],
-    //         Data1[individualKey]['date'],
-    //         Data1[individualKey]['confirm'],
-    //         Data1[individualKey]['pushkey'],
-    //         Data1[individualKey]['userPhotoUrl'],
-    //         Data1[individualKey]['userName'],
-    //         Data1[individualKey]['userId'],
-    //         Data1[individualKey]['category']);
+    getCurrentUser().then((user) {
+      if (user != null) {
+        uid = user.uid;
+        userId = uid;
+        print(uid);
+        if (uid != null) {
+          DatabaseReference database =
+              FirebaseDatabase.instance.reference().child("Users");
+          database.once().then((DataSnapshot data) {
+            var Data1 = data.value;
+            if (Data1 == null) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => Profile()),
+                (Route<dynamic> route) => false,
+              );
+              print(' data null profile');
+            } else {
+              print(Data1);
+              var keys = Data1.keys;
 
-    //     if (Data1[individualKey]['confirm'] == "Yes") {
-    //       postList.add(posts);
-    //       // category.add(value)
+              print(keys);
+              for (var key in keys) {
+                print('key  ' + key);
+                if (key == uid) {
+                  setState(() {
+                    name1 = Data1[key]['fullName'];
+                    url = Data1[key]['photoUrl'];
+                  });
 
-    //     }
-    //   }
-    //   setState(() {
-    //     print(postList.length);
-    //   });
-    // });
+                  break;
+                } else {
+                  print('profile profile');
+                }
+              }
+            }
+          });
+        }
+      } else {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Profile()),
+          (Route<dynamic> route) => false,
+        );
+      }
+    });
   }
 
   @override
@@ -299,15 +317,6 @@ class _RecentState extends State<Recent> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  // Container(
-                  //   alignment: Alignment.centerRight,
-                  //   child: IconButton(
-                  //     icon: Icon(
-                  //       Icons.power_settings_new,
-
-                  //     ),
-                  //   ),
-                  // )
                   SizedBox(
                     height: 20,
                   ),
@@ -320,15 +329,21 @@ class _RecentState extends State<Recent> {
                           Colors.lightBlueAccent,
                           Colors.lightBlue
                         ])),
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundImage: NetworkImage(url),
-                    ),
+                    child: url == null
+                        ? CircleAvatar(
+                            child: Icon(
+                            Icons.person,
+                            color: Colors.blue[100],
+                          ))
+                        : CircleAvatar(
+                            radius: 40,
+                            backgroundImage: NetworkImage(url),
+                          ),
                   ),
                   SizedBox(
                     height: 5,
                   ),
-                  Text(name1),
+                  name1 == null ? Text('name') : Text(name1),
                   SizedBox(
                     height: 30,
                   ),
