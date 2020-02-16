@@ -1,8 +1,12 @@
+import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:suhadhamaru/logic/userProfile.dart';
 import 'package:suhadhamaru/logic/auth.dart';
+import 'package:path/path.dart' as Path;
 
 class Profile extends StatefulWidget {
   @override
@@ -17,25 +21,38 @@ class ProfileState extends State<Profile> {
   TextEditingController _firstname = TextEditingController();
   TextEditingController _email = TextEditingController();
   TextEditingController _currencity = TextEditingController();
-  // array for dropdown
-  // var _currencies = ['Police', 'Teacher', 'University'];
-  // var currencyValue = 'Police';
+  //array for dropdown
+  //var _currencies = ['Police', 'Teacher', 'University'];
+  //var currencyValue = 'Police';
   //bool for modalprogressHUD
   bool _isLoading = false;
 
   final DatabaseReference database =
       FirebaseDatabase.instance.reference().child("Users");
 
-  // load profile details
+  //load profile details
   String url = imageUrl;
   String name1 = name;
   String email1 = email;
   String userId1 = userId;
 
+  //upload pro pic
+  File _imageFile;
+  StorageReference reference;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser().then((user) {
+      if (user != null) {
+        userId1 = user.uid;
+        email1 = user.email;
+      } else {}
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    _firstname.text = name1;
-
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -51,16 +68,9 @@ class ProfileState extends State<Profile> {
     );
   }
 
-  // void onClickedItem(String dropdownitem) {
-  //   setState(() {
-  //     this.currencyValue = dropdownitem;
-  //     print(this.currencyValue);
-  //   });
-  // }
-
   Widget createProfileUI() {
-    _firstname.text = name;
-    _email.text = email;
+    _firstname.text = name1;
+    _email.text = email1;
     return Form(
       key: _formKey,
       child: Column(
@@ -76,21 +86,39 @@ class ProfileState extends State<Profile> {
             ),
           )),
           url == null
-              ? Container(
-                  width: 100,
-                  height: 100,
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.purple[100],
+              ? GestureDetector(
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    child: CircleAvatar(
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.blue[100],
+                        size: 70,
+                      ),
                     ),
                   ),
+                  onTap: () {
+                    askCapture(context);
+                  },
                 )
-              : CircleAvatar(
-                  backgroundImage: NetworkImage(url),
-                  radius: 60,
-                  backgroundColor: Colors.transparent,
-                ),
+              : Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: CircleAvatar(
+                    radius: 50,
+                    child: ClipOval(
+                      child: Image.network(
+                        url,
+                        // height: 150,
+                        width: 100,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  )),
           Container(
             margin: EdgeInsets.only(top: 5, left: 5, right: 5, bottom: 5),
             child: Padding(
@@ -257,5 +285,96 @@ class ProfileState extends State<Profile> {
         ],
       ),
     );
+  }
+
+  Future getImage(bool isCamera) async {
+    File image;
+    if (isCamera) {
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    } else {
+      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    }
+
+    setState(() {
+      _imageFile = image;
+    });
+    return _imageFile;
+  }
+
+  Future uploadImage(File imagePath) async {
+    reference = FirebaseStorage.instance
+        .ref()
+        .child('Profiles/${Path.basename(imagePath.path)}');
+    //chats/${Path.basename(_imageFile.path)}
+    StorageUploadTask uploadTask = reference.putFile(_imageFile);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    String setImageUrl = await taskSnapshot.ref.getDownloadURL();
+
+    setState(() {
+      // _uploaded = true;
+      url = setImageUrl;
+    });
+  }
+
+  Future askCapture(BuildContext context) async {
+    switch (await showDialog(
+        context: context,
+        child: Center(
+          child: new SimpleDialog(
+            contentPadding:
+                EdgeInsets.only(right: 10, left: 10, top: 5, bottom: 5),
+            title: new Text(
+              "Choose Your Profile Picture",
+              textAlign: TextAlign.center,
+            ),
+            children: <Widget>[
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    GestureDetector(
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        child: Icon(
+                          Icons.photo,
+                          color: Colors.blue[400],
+                          size: 70,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        getImage(false).then((onImage) {
+                          uploadImage(onImage);
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 25,
+                    ),
+                    GestureDetector(
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.blue[400],
+                          size: 70,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        getImage(true).then((onImage) {
+                          uploadImage(onImage);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ))) {
+    }
   }
 }

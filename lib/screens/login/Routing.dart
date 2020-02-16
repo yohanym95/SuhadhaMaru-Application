@@ -54,8 +54,11 @@ class _RoutingState extends State<Routing> {
         Center(
           child: Text('Loading....'),
         ),
+        SizedBox(
+          height: 10,
+        ),
         Center(
-          child: SpinKitWave(
+          child: SpinKitCircle(
             color: Colors.blue,
             size: 50.0,
           ),

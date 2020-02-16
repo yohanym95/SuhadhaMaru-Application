@@ -44,6 +44,65 @@ class LoginState extends State<Login> {
 
           for (var key in Data1) {
             if (key == uid) {
+              
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomePages()),
+                (Route<dynamic> route) => false,
+              );
+
+              print('homepage');
+              break;
+            } else {
+             
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => Profile()),
+                (Route<dynamic> route) => false,
+              );
+
+              print('profile');
+            }
+          }
+        }
+      });
+    }).catchError((onError) {
+      setState(() async {
+        _isLoading = false;
+        print('error');
+      });
+      print('error');
+      print(onError.toString());
+    });
+
+    
+  }
+
+   checkFirebase(String email,String password) {
+    DatabaseReference database =
+        FirebaseDatabase.instance.reference().child('Users');
+
+    signIn(email,password).then((user) {
+      String uid = user.uid;
+
+      if (uid == null) {
+        print('login uid :$uid');
+      }
+
+      database.once().then((DataSnapshot data) {
+        if (data.value == null) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Profile()),
+            (Route<dynamic> route) => false,
+          );
+        } else {
+          var Data1 = data.value.keys;
+
+          print(Data1);
+
+          for (var key in Data1) {
+            if (key == uid) {
               // setState(() async {
               //   _isLoading = false;
               // });
@@ -176,6 +235,7 @@ class LoginState extends State<Login> {
                           setState(() {
                             _isLoading = true;
                           });
+                          checkFirebase(_email.text, _password.text);
                         }
                       },
                       color: Colors.blue[300],
