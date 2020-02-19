@@ -4,6 +4,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:suhadhamaru/model/Post.dart';
 import 'package:suhadhamaru/screens/Post/AddPost.dart';
 import 'package:suhadhamaru/screens/Post/Comments.dart';
+import 'package:suhadhamaru/utils/PostUI.dart';
 
 class PostPage extends StatefulWidget {
   String category;
@@ -74,34 +75,7 @@ class PostPageState extends State<PostPage> {
                   }
                 }
                 return postList.length == 0
-                    ? Center(
-                        child: Container(
-                            padding: EdgeInsets.all(4),
-                            height: height / 5,
-                            width: width / 2,
-                            child: Center(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Image(
-                                    image: AssetImage("assests/emptypost.png"),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  'No Posts in this category yet!',
-                                  style: TextStyle(
-                                      fontSize: 11,
-                                      fontFamily: 'coiny',
-                                      color: Colors.black26),
-                                )
-                              ],
-                            ))),
-                      )
+                    ? emptyPost(height, width)
                     : new ListView.builder(
                         itemCount: postList.length,
                         itemBuilder: (_, index) {
