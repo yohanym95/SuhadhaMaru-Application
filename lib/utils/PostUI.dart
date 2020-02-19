@@ -99,3 +99,36 @@ Widget postsUI(String title, String description, String date, String key,
           )),
     );
   }
+
+
+  Widget emptyPost(double height,double width){
+    return Center(
+                          child: Container(
+                              padding: EdgeInsets.all(4),
+                              height: height / 5,
+                              width: width / 2,
+                              child: Center(
+                                  child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Image(
+                                      image:
+                                          AssetImage("assests/emptypost.png"),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    'No Posts in this category yet!',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        fontFamily: 'coiny',
+                                        color: Colors.black26),
+                                  )
+                                ],
+                              ))),
+                        )
+  }
