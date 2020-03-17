@@ -5,6 +5,8 @@ import 'package:suhadhamaru/screens/HomePage/AddPosts.dart';
 import 'package:suhadhamaru/screens/HomePage/Category.dart';
 import 'package:suhadhamaru/screens/HomePage/Recent.dart';
 import 'package:suhadhamaru/screens/Profile/Profile.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class HomePages extends StatefulWidget {
   @override
@@ -16,6 +18,40 @@ class HomePages extends StatefulWidget {
 
 class HomePagesState extends State<HomePages> {
   final _pageController = PageController();
+
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
+  @override
+  void initState() {
+    super.initState();
+
+    firebaseMessaging.configure(
+      onLaunch: (Map<String, dynamic> msg) {
+        print("onLaunch called");
+      },
+      onResume: (Map<String, dynamic> msg) {
+        print("onResume called");
+      },
+      onMessage: (Map<String, dynamic> msg) {
+        print("pnMessage called");
+      },
+    );
+
+    firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, alert: true, badge: true));
+
+    firebaseMessaging.onIosSettingsRegistered.listen((onData) {
+      print('IOS Setting registered : ');
+    });
+    firebaseMessaging.getToken().then((token) {
+      print('tokenhOMEpAGE: $token');
+      // textValue = token;
+      DatabaseReference databaseReference = new FirebaseDatabase().reference();
+      databaseReference.child('fcm-token/${token}').set({'token': token});
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var data = EasyLocalizationProvider.of(context).data;
