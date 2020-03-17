@@ -185,7 +185,7 @@ class _AddPostState extends State<AddPost> {
       'Post': postController.text,
       'category': this.currencyValue,
       'date': date,
-      'confirm': 'No',
+      'confirm': 'Yes',
       'pushkey': key,
       'userPhotoUrl': userPhotoUrl,
       'userName': userName,
@@ -196,11 +196,24 @@ class _AddPostState extends State<AddPost> {
       setState(() {
         _isLoading = onValue;
       });
-      scaffold.showSnackBar(new SnackBar(
-        content: new Text("Your post Uploaded. Now it's at review process."),
-      ));
       titleController.clear();
       postController.clear();
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text('Suhadha-Maru'),
+              subtitle: Text('Added Mutual Job Transfer Post'),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      
       // Navigator.pop(context, true);
     }).catchError((onError) {
       setState(() {
