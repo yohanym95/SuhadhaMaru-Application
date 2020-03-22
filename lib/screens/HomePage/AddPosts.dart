@@ -34,6 +34,7 @@ class _AddPostState extends State<AddPost> {
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
+        backgroundColor: Colors.blue[50],
         appBar: AppBar(
           title: Text(
               AppLocalizations.of(context).tr('homePage.addPostPage.addPost'),

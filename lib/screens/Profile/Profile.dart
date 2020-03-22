@@ -5,6 +5,7 @@ import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/model/Post.dart';
 import 'package:suhadhamaru/model/ProfileDetail.dart';
 import 'package:suhadhamaru/screens/Post/Comments.dart';
+import 'package:suhadhamaru/utils/DialogTrigger.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -38,6 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
+          backgroundColor: Colors.blue[50],
           appBar: AppBar(
             title: Text(
                 AppLocalizations.of(context).tr('homePage.profilePage.profile'),
@@ -379,13 +381,6 @@ class _ProfilePageState extends State<ProfilePage> {
       String userPhotoUrl,
       String postCategory,
       String review) {
-    if (review == 'Yes') {
-      // postList.add(posts);
-      // print(posts);
-      review = 'Reviewed';
-    } else {
-      review = 'Reviewing';
-    }
     return new Card(
       color: Colors.white,
       elevation: 10.0,
@@ -479,25 +474,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.all(3),
-                child: review == 'Reviewed'
-                    ? new Text(
-                        review,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.green),
-                        textAlign: TextAlign.center,
-                      )
-                    : new Text(
-                        review,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.red),
-                        textAlign: TextAlign.center,
-                      ),
-              ),
+                  margin: EdgeInsets.all(3),
+                  child: GestureDetector(
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                    onTap: () {
+                      dialogDeleteTrigger(context, key);
+                    },
+                  )),
             ],
           )),
     );

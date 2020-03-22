@@ -90,6 +90,7 @@ class _RecentState extends State<Recent> {
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
+        backgroundColor: Colors.blue[50],
         appBar: AppBar(
           title: Text(
               AppLocalizations.of(context).tr('homePage.recentPage.titleBar'),

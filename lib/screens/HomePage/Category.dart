@@ -14,6 +14,7 @@ class _CategoriesState extends State<Categories> {
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
+        backgroundColor: Colors.blue[50],
         appBar: AppBar(
           title: Text(
               AppLocalizations.of(context)
