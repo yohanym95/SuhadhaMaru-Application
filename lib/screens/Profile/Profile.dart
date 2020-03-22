@@ -475,25 +475,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.all(3),
-                child: review == 'Reviewed'
-                    ? new Text(
-                        review,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.green),
-                        textAlign: TextAlign.center,
-                      )
-                    : new Text(
-                        review,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.red),
-                        textAlign: TextAlign.center,
-                      ),
-              ),
+                  margin: EdgeInsets.all(3),
+                  child: GestureDetector(child: Icon(Icons.delete),onTap: (){
+                    
+                  },)),
             ],
           )),
     );
