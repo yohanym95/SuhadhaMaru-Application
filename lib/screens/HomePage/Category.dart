@@ -14,7 +14,6 @@ class _CategoriesState extends State<Categories> {
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
-        backgroundColor: Colors.blue[50],
         appBar: AppBar(
           title: Text(
               AppLocalizations.of(context)
@@ -58,7 +57,7 @@ class _CategoriesState extends State<Categories> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PostPage('police')),
+                    MaterialPageRoute(builder: (context) => PostPage('Police')),
                   );
                 },
               ),
@@ -92,7 +91,7 @@ class _CategoriesState extends State<Categories> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PostPage('doctor')),
+                    MaterialPageRoute(builder: (context) => PostPage('Doctor')),
                   );
                 },
               ),
@@ -126,7 +125,7 @@ class _CategoriesState extends State<Categories> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PostPage('teacher')),
+                        builder: (context) => PostPage('Teacher')),
                   );
                 },
               ),
@@ -159,7 +158,7 @@ class _CategoriesState extends State<Categories> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PostPage('nurse')),
+                    MaterialPageRoute(builder: (context) => PostPage('Nurse')),
                   );
                 },
               ),

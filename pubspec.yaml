@@ -71,9 +71,9 @@ flutter:
    - assests/nurse.png
    - assests/police.png
    - assests/teacher.png
+   - assests/select.png
    - assests/introduction/get_notification.png
    - assests/introduction/get_solutions.png
-   - assests/introduction/share_idea.png
    - assests/introduction/share_article.png
    - assests/introduction/team_solutions.png
    - assests/person.png

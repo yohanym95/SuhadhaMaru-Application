@@ -39,7 +39,8 @@ class _ProfilePageState extends State<ProfilePage> {
       data: data,
       child: Scaffold(
           appBar: AppBar(
-            title: Text('Profile',
+            title: Text(
+                AppLocalizations.of(context).tr('homePage.profilePage.profile'),
                 style: TextStyle(
                     fontFamily: 'coiny', fontWeight: FontWeight.bold)),
           ),
@@ -239,7 +240,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 CircularProgressIndicator(),
                                 Center(
                                     child: new Text(
-                                  "Loading My Profile",
+                                  AppLocalizations.of(context)
+                                      .tr('homePage.profilePage.loadProfile'),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                               ],
@@ -335,7 +337,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                         height: 4,
                                       ),
                                       Text(
-                                        'No Posts in this category yet!',
+                                        AppLocalizations.of(context)
+                                            .tr('homePage.profilePage.noPost'),
                                         style: TextStyle(
                                             fontSize: 11,
                                             fontFamily: 'coiny',
@@ -351,7 +354,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             CircularProgressIndicator(),
-                            new Text("Please wait! Posts are loading"),
+                            new Text(AppLocalizations.of(context)
+                                .tr('homePage.profilePage.loadPost')),
                           ],
                         );
 

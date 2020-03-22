@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -21,6 +22,7 @@ class PostPageState extends State<PostPage> {
   String userId;
   List<Posts> postList = [];
   String category;
+  String titleBarName;
 
   PostPageState(this.category);
 
@@ -35,111 +37,130 @@ class PostPageState extends State<PostPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    var data = EasyLocalizationProvider.of(context).data;
+
+    if (category == 'Doctor') {
+      titleBarName =
+          AppLocalizations.of(context).tr('post.postPage.titleDoctor');
+    } else if (category == 'Police') {
+      titleBarName =
+          AppLocalizations.of(context).tr('post.postPage.titlePolice');
+    } else if (category == 'Teacher') {
+      titleBarName =
+          AppLocalizations.of(context).tr('post.postPage.titleTeacher');
+    } else if (category == 'Nurse') {
+      titleBarName =
+          AppLocalizations.of(context).tr('post.postPage.titleNurse');
+    }
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue[300],
-        title: Text(category,
-            style: TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
-      ),
-      body: Container(
-          child: Center(
-        child: FutureBuilder(
-          future: FirebaseDatabase.instance
-              .reference()
-              .child("Posts")
-              .orderByChild('category')
-              .equalTo(category)
-              .once(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              var Data1 = snapshot.data.value;
-              if (Data1 != null) {
-                var keys = snapshot.data.value.keys;
-                postList.clear();
+    return EasyLocalizationProvider(
+      data: data,
+      child: Scaffold(
+        appBar: AppBar(
+            title: Text(titleBarName,
+                style: TextStyle(
+                    fontFamily: 'coiny', fontWeight: FontWeight.bold))),
+        body: Container(
+            child: Center(
+          child: FutureBuilder(
+            future: FirebaseDatabase.instance
+                .reference()
+                .child("Posts")
+                .orderByChild('category')
+                .equalTo(category)
+                .once(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                var Data1 = snapshot.data.value;
+                if (Data1 != null) {
+                  var keys = snapshot.data.value.keys;
+                  postList.clear();
 
-                for (var individualKey in keys) {
-                  Posts posts = new Posts(
-                      Data1[individualKey]['title'],
-                      Data1[individualKey]['Post'],
-                      Data1[individualKey]['date'],
-                      Data1[individualKey]['confirm'],
-                      Data1[individualKey]['pushkey'],
-                      Data1[individualKey]['userPhotoUrl'],
-                      Data1[individualKey]['userName'],
-                      Data1[individualKey]['userId'],
-                      Data1[individualKey]['category']);
+                  for (var individualKey in keys) {
+                    Posts posts = new Posts(
+                        Data1[individualKey]['title'],
+                        Data1[individualKey]['Post'],
+                        Data1[individualKey]['date'],
+                        Data1[individualKey]['confirm'],
+                        Data1[individualKey]['pushkey'],
+                        Data1[individualKey]['userPhotoUrl'],
+                        Data1[individualKey]['userName'],
+                        Data1[individualKey]['userId'],
+                        Data1[individualKey]['category']);
 
-                  if (Data1[individualKey]['confirm'] == 'Yes') {
-                    postList.add(posts);
+                    if (Data1[individualKey]['confirm'] == 'Yes') {
+                      postList.add(posts);
+                    }
                   }
-                }
-                return postList.length == 0
-                    ? emptyPost(height, width)
-                    : new ListView.builder(
-                        itemCount: postList.length,
-                        itemBuilder: (_, index) {
-                          return postsUI(
-                              postList[index].title,
-                              postList[index].post,
-                              postList[index].date,
-                              postList[index].pushkey,
-                              postList[index].userName,
-                              postList[index].userPhotoUrl);
-                        },
-                      );
-              } else {
-                return Center(
-                  child: Container(
-                      padding: EdgeInsets.all(4),
-                      height: height / 5,
-                      width: width / 2,
-                      child: Center(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Expanded(
-                            child: Image(
-                              image: AssetImage("assests/emptypost.png"),
+                  return postList.length == 0
+                      ? emptyPost(height, width)
+                      : new ListView.builder(
+                          itemCount: postList.length,
+                          itemBuilder: (_, index) {
+                            return postsUI(
+                                postList[index].title,
+                                postList[index].post,
+                                postList[index].date,
+                                postList[index].pushkey,
+                                postList[index].userName,
+                                postList[index].userPhotoUrl);
+                          },
+                        );
+                } else {
+                  return Center(
+                    child: Container(
+                        padding: EdgeInsets.all(4),
+                        height: height / 5,
+                        width: width / 2,
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: Image(
+                                image: AssetImage("assests/emptypost.png"),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Text(
-                            'No Posts in this category yet!',
-                            style: TextStyle(
-                                fontSize: 11,
-                                fontFamily: 'coiny',
-                                color: Colors.black26),
-                          )
-                        ],
-                      ))),
-                );
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              AppLocalizations.of(context)
+                                  .tr('post.postPage.noPost'),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontFamily: 'coiny',
+                                  color: Colors.black26),
+                            )
+                          ],
+                        ))),
+                  );
+                }
               }
-            }
-            // return Column(
-            //   crossAxisAlignment: CrossAxisAlignment.center,
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     CircularProgressIndicator(),
-            //     new Text("Please wait! Posts are loading"),
-            //   ],
-            // );
-            return ShimmerList();
+              // return Column(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     CircularProgressIndicator(),
+              //     new Text("Please wait! Posts are loading"),
+              //   ],
+              // );
+              return ShimmerList();
+            },
+          ),
+        )),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.blue,
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Post(category)),
+            );
           },
         ),
-      )),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Post(category)),
-          );
-        },
       ),
     );
   }

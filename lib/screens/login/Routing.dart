@@ -1,10 +1,12 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suhadhamaru/screens/introduction/introScreen.dart';
 import 'package:suhadhamaru/screens/login/LandingPage.dart';
+import 'package:suhadhamaru/utils/language.dart';
 
 class Routing extends StatefulWidget {
   @override
@@ -23,7 +25,7 @@ class _RoutingState extends State<Routing> {
     if (stringValue.toString() != 'Yes') {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => IntroScreen()),
+        MaterialPageRoute(builder: (context) => SelectLang()),
         (Route<dynamic> route) => false,
       );
     } else {
@@ -40,16 +42,16 @@ class _RoutingState extends State<Routing> {
   void initState() {
     super.initState();
     getInstallValue();
-
-    
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: loaderWaveComment(),
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
+      data: data,
+      child: Scaffold(
+        body: loaderWaveComment(),
+      ),
     );
   }
 
@@ -59,16 +61,17 @@ class _RoutingState extends State<Routing> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Center(
-          child: Text('Loading....'),
+          child: SpinKitCircle(
+            color: Colors.blue,
+            size: 50.0,
+          ),
         ),
         SizedBox(
           height: 10,
         ),
         Center(
-          child: SpinKitCircle(
-            color: Colors.blue,
-            size: 50.0,
-          ),
+          child: Text(
+              AppLocalizations.of(context).tr('login.landingPage.load')),
         ),
       ],
     );

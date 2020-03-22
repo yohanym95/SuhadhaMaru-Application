@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -55,13 +56,17 @@ class _CommentsState extends State<Comments> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      key: homeScaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Colors.blue[300],
-        title: Text('Comments'),
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
+      data: data,
+      child: Scaffold(
+        key: homeScaffoldKey,
+        appBar: AppBar(
+          title: Text(
+              AppLocalizations.of(context).tr('post.commentPage.titleComment')),
+        ),
+        body: commentsPage(height, context),
       ),
-      body: commentsPage(height, context),
     );
   }
 
@@ -99,12 +104,14 @@ class _CommentsState extends State<Comments> {
                     controller: commentController,
                     validator: (String value) {
                       if (value.isEmpty) {
-                        return 'Enter your comments';
+                        return AppLocalizations.of(context)
+                            .tr('post.commentPage.enterComment');
                       }
                       return null;
                     },
                     decoration: InputDecoration(
-                        hintText: 'Write Your Comment..',
+                        hintText: AppLocalizations.of(context)
+                            .tr('post.commentPage.hintComment'),
                         errorStyle:
                             TextStyle(color: Colors.redAccent, fontSize: 14.0),
                         border: OutlineInputBorder(
@@ -117,7 +124,7 @@ class _CommentsState extends State<Comments> {
                 child: GestureDetector(
                   child: Icon(
                     Icons.send,
-                    color: Colors.purple,
+                    color: Colors.blue,
                   ),
                   onTap: () {
                     saveComment(
@@ -208,7 +215,9 @@ class _CommentsState extends State<Comments> {
                               size: 50,
                             )),
                             Text(
-                              'No Comments in this post yet!',
+                              AppLocalizations.of(context)
+                                  .tr('post.commentPage.noComment'),
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 11,
                                   fontFamily: 'coiny',
@@ -245,7 +254,8 @@ class _CommentsState extends State<Comments> {
       // // _isLoading = onValue;
       // });
       scaffold.showSnackBar(new SnackBar(
-        content: new Text("Added your comment."),
+        content: new Text(
+            AppLocalizations.of(context).tr('homePage.commentPage.addComment')),
       ));
       commentController.clear();
     }).catchError((onError) {
@@ -253,7 +263,8 @@ class _CommentsState extends State<Comments> {
       //  //  _isLoading = false;
       //   });
       scaffold.showSnackBar(new SnackBar(
-        content: new Text("Some Error occured. Please Try Again"),
+        content: new Text(AppLocalizations.of(context)
+            .tr('homePage.commentPage.errorComment')),
       ));
       commentController.clear();
     });

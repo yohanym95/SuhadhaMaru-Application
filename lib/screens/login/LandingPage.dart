@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -19,24 +20,28 @@ class LandingPageState extends State<LandingPage> {
   FirebaseAuth mAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<FirebaseUser>(
-      stream: mAuth.onAuthStateChanged,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          FirebaseUser user = snapshot.data;
-          if (user == null) {
-            return MyHomePage();
-          } else {
-            // print();
-            if (user != null) {
-              check(user);
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
+      data: data,
+      child: StreamBuilder<FirebaseUser>(
+        stream: mAuth.onAuthStateChanged,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            FirebaseUser user = snapshot.data;
+            if (user == null) {
+              return MyHomePage();
+            } else {
+              // print();
+              if (user != null) {
+                check(user);
+              }
             }
+            return Scaffold(body: loaderWaveComment());
+          } else {
+            return Scaffold(body: loaderWaveComment());
           }
-          return Scaffold(body: loaderWaveComment());
-        } else {
-          return Scaffold(body: loaderWaveComment());
-        }
-      },
+        },
+      ),
     );
   }
 
@@ -55,7 +60,8 @@ class LandingPageState extends State<LandingPage> {
           height: 10,
         ),
         Center(
-          child: Text('Loading....'),
+          child: Text(
+              AppLocalizations.of(context).tr('login.landingPage.load')),
         ),
       ],
     );
