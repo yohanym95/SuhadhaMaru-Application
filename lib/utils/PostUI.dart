@@ -35,7 +35,7 @@ Widget postsUI(String title, String description, String date, String key,
                         userName,
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 19),
-                        textAlign: TextAlign.center,
+                        //  textAlign: TextAlign.center,
                       ),
                     ),
                     Container(
@@ -44,7 +44,6 @@ Widget postsUI(String title, String description, String date, String key,
                         title,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
-                        textAlign: TextAlign.center,
                       ),
                     ),
                     Container(

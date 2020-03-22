@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -53,16 +54,24 @@ class ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    var data = EasyLocalizationProvider.of(context).data;
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-        backgroundColor: Colors.blue[300],
-      ),
-      body: ModalProgressHUD(
-        inAsyncCall: _isLoading,
-        child: SingleChildScrollView(
-          child: Container(margin: EdgeInsets.all(5), child: createProfileUI()),
+    return EasyLocalizationProvider(
+      data: data,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+              AppLocalizations.of(context)
+                  .tr('homePage.createProfilePage.titleProfile'),
+              style:
+                  TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
+        ),
+        body: ModalProgressHUD(
+          inAsyncCall: _isLoading,
+          child: SingleChildScrollView(
+            child:
+                Container(margin: EdgeInsets.all(5), child: createProfileUI()),
+          ),
         ),
       ),
     );
@@ -78,7 +87,8 @@ class ProfileState extends State<Profile> {
           Container(
               child: Center(
             child: Text(
-              'Create Your Profile',
+              AppLocalizations.of(context)
+                  .tr('homePage.createProfilePage.createProfile'),
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -129,19 +139,22 @@ class ProfileState extends State<Profile> {
                   //style: textStyle,
                   validator: (String Value) {
                     if (Value.isEmpty) {
-                      return 'Enter Your First Name';
+                      return AppLocalizations.of(context)
+                          .tr('homePage.createProfilePage.Name');
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      labelText: 'Name',
+                      labelText: AppLocalizations.of(context)
+                          .tr('homePage.createProfilePage.labelName'),
                       focusColor: Colors.blue,
                       labelStyle:
                           TextStyle(fontSize: 18.0, color: Colors.black),
                       prefixIcon: Icon(Icons.person),
                       errorStyle:
                           TextStyle(color: Colors.redAccent, fontSize: 15.0),
-                      hintText: "Name",
+                      hintText: AppLocalizations.of(context)
+                          .tr('homePage.createProfilePage.hintName'),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       )),
@@ -157,19 +170,22 @@ class ProfileState extends State<Profile> {
                   //style: textStyle,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'Enter Your Email';
+                      return AppLocalizations.of(context)
+                          .tr('homePage.createProfilePage.email');
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: AppLocalizations.of(context)
+                          .tr('homePage.createProfilePage.labelEmail'),
                       focusColor: Colors.blue,
                       labelStyle:
                           TextStyle(fontSize: 18.0, color: Colors.black),
                       prefixIcon: Icon(Icons.person),
                       errorStyle:
                           TextStyle(color: Colors.redAccent, fontSize: 15.0),
-                      hintText: "Email",
+                      hintText: AppLocalizations.of(context)
+                          .tr('homePage.createProfilePage.hintEmail'),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       )),
@@ -218,19 +234,22 @@ class ProfileState extends State<Profile> {
                   //style: textStyle,
                   validator: (String Value) {
                     if (Value.isEmpty) {
-                      return 'Enter Your Current City';
+                      return AppLocalizations.of(context)
+                          .tr('homePage.createProfilePage.currentCity');
                     }
                     return null;
                   },
                   decoration: InputDecoration(
-                      labelText: 'Current City',
+                      labelText: AppLocalizations.of(context)
+                          .tr('homePage.createProfilePage.labelCity'),
                       focusColor: Colors.blue,
                       labelStyle:
                           TextStyle(fontSize: 18.0, color: Colors.black),
                       prefixIcon: Icon(Icons.person),
                       errorStyle:
                           TextStyle(color: Colors.redAccent, fontSize: 15.0),
-                      hintText: "Current City",
+                      hintText: AppLocalizations.of(context)
+                          .tr('homePage.createProfilePage.hintCity'),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
                       )),
@@ -244,7 +263,8 @@ class ProfileState extends State<Profile> {
                 padding: const EdgeInsets.only(
                     top: 8, bottom: 8, left: 10, right: 10),
                 child: Text(
-                  'Submit',
+                  AppLocalizations.of(context)
+                      .tr('homePage.createProfilePage.profileSubmit'),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -324,7 +344,8 @@ class ProfileState extends State<Profile> {
             contentPadding:
                 EdgeInsets.only(right: 10, left: 10, top: 5, bottom: 5),
             title: new Text(
-              "Choose Your Profile Picture",
+              AppLocalizations.of(context)
+                  .tr('homePage.createProfilePage.profilePicture'),
               textAlign: TextAlign.center,
             ),
             children: <Widget>[

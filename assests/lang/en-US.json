@@ -1,9 +1,4 @@
 {
-    "loginHome": {
-        "main": {
-            "loginPageTitle": "Suhadha Maru"
-        }
-    },
     "appBarTitle": "Suhadha Maru",
     "homePage": {
         "languageDialog": {
@@ -12,7 +7,11 @@
         "navigateDrawer": {
             "language": "Language",
             "logout": "Logout",
-            "profile": "My Profile"
+            "profile": "My Profile",
+            "logoutDialogTitle":"Logout",
+            "logoutDialogSubtitle":"Are You Sure?",
+            "dialogNo":"No",
+            "dialogYes":"Yes"
         },
         "categoryPage": {
             "categories": "Categories",
@@ -25,10 +24,117 @@
             "mypost": "My Posts",
             "name": "Name",
             "email": "Email",
-            "city": "City"
+            "city": "City",
+            "profile":"My Profile",
+            "noPost": "You didn't post anything yet!",
+            "loadProfile":"Loading My Profile",
+            "loadPost":"Please wait!Loading your posts!"
         },
         "addPostPage": {
-            "addPost": "Add Post"
+            "addPost": "Add Post",
+            "dialogTitle": "Suhadha Maru",
+            "dialogsubTitle": "Added Your Post",
+            "dialogButton": "Ok",
+            "dialogErrorSubTitle": "Some Error occured. Please Try Again",
+            "category": "Category",
+            "postEnterTitle": "Enter Your Title",
+            "postTitle": "Title",
+            "postHintTitle": "Title",
+            "postEnter": "Enter Your Post",
+            "postDiscription": "Description",
+            "postHintPost": "Enter Your Post",
+            "postSubmit": "Submit"
+        },
+        "createProfilePage": {
+            "titleProfile": "Create Profile",
+            "createProfile": "Create Your Profile",
+            "Name": "Enter Your Name",
+            "labelName": "Name",
+            "hintName": "Enter Your Name",
+            "email": "Enter Your Email",
+            "labelEmail": "Email",
+            "hintEmail": "Enter Your Email",
+            "currentCity": "Enter Your City",
+            "labelCity": "City",
+            "hintCity": "Enter Your City",
+            "profileSubmit": "Submit",
+            "profilePicture": "Choose Your Profile Picture"
+        },
+        "recentPage": {
+            "titleBar": "Suhadha Maru",
+            "noPost": "No post Yet!"
         }
+    },
+    "post": {
+        "postPage": {
+            "titleDoctor": "Doctor",
+            "titleTeacher": "Teacher",
+            "titlePolice": "Police",
+            "titleNurse": "Nurse",
+            "noPost": "'No Posts in this category yet!',"
+        },
+        "commentPage": {
+            "titleComment": "Comments",
+            "enterComment": "Enter your comments",
+            "hintComment": "Enter Your Comment..",
+            "noComment": "No Comments in this post yet!",
+            "addComment": "Added your comment.",
+            "errorComment": "Some Error occured. Please Try Again"
+        },
+        "catAddPostPage": {
+            "titleBar": "Add Post",
+            "addEnterTitle": "Enter Your Title",
+            "addTitle": "Title",
+            "hintTitle": "Enter Your Title",
+            "addEnterPost": "Enter Your Post",
+            "postDiscription": "Description",
+            "postHint": "Enter Your Post",
+            "postSubmit": "Submit",
+            "snackBarUploaded": "Added Your Post",
+            "snackBarError": "Some Error occured. Please Try Again"
+        }
+    },
+    "login": {
+        "landingPage": {
+            "load": "Loading..."
+        },
+        "loginPage": {
+            "titleBar": "Login",
+            "labelEmail": "Email",
+            "hintEmail": "Email",
+            "returnEmail": "Enter Your Valid Email",
+            "labelPassword": "Password",
+            "hintPassword": "Password",
+            "returnPassword": "Enter Your Password",
+            "loginButton": "Login",
+            "loginGoogleButton": "Login with Google",
+            "loginWith": "Or You can Login with"
+        },
+        "loginHome": {
+            "loginPageTitle": "Suhadha Maru",
+            "alreadyAccount": "Already Have Account",
+            "newAccount": "Create New Account"
+        },
+        "signUp": {
+            "titleBar": "Sign Up",
+            "labelEmail": "Email",
+            "hintEmail": "Email",
+            "returnEmail": "Enter Your Valid Email",
+            "labelPassword": "Password",
+            "hintPassword": "Password",
+            "returnPassword": "Enter Your Password",
+            "signUpButton": "Sign Up"
+        }
+    },
+    "IntroductionPage": {
+        "title1":"Share Your Posts",
+        "body1":"Sharing Your Mutual Job Transfer Posts!",
+        "title2":"Get Notification",
+        "body2":"Get Notification about posts!",
+        "title3":"Get Solutions",
+        "body3":"Get the solution for your problem!",
+        "title4":"Team Work",
+        "body4":"People can get the solutions by work as team!",
+        "doneButton":"Next"
     }
 }

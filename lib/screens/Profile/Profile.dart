@@ -5,6 +5,7 @@ import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/model/Post.dart';
 import 'package:suhadhamaru/model/ProfileDetail.dart';
 import 'package:suhadhamaru/screens/Post/Comments.dart';
+import 'package:suhadhamaru/utils/DialogTrigger.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -38,8 +39,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
+          backgroundColor: Colors.blue[50],
           appBar: AppBar(
-            title: Text('Profile',
+            title: Text(
+                AppLocalizations.of(context).tr('homePage.profilePage.profile'),
                 style: TextStyle(
                     fontFamily: 'coiny', fontWeight: FontWeight.bold)),
           ),
@@ -239,7 +242,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 CircularProgressIndicator(),
                                 Center(
                                     child: new Text(
-                                  "Loading My Profile",
+                                  AppLocalizations.of(context)
+                                      .tr('homePage.profilePage.loadProfile'),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                               ],
@@ -335,7 +339,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                         height: 4,
                                       ),
                                       Text(
-                                        'No Posts in this category yet!',
+                                        AppLocalizations.of(context)
+                                            .tr('homePage.profilePage.noPost'),
                                         style: TextStyle(
                                             fontSize: 11,
                                             fontFamily: 'coiny',
@@ -351,7 +356,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             CircularProgressIndicator(),
-                            new Text("Please wait! Posts are loading"),
+                            new Text(AppLocalizations.of(context)
+                                .tr('homePage.profilePage.loadPost')),
                           ],
                         );
 
@@ -375,13 +381,6 @@ class _ProfilePageState extends State<ProfilePage> {
       String userPhotoUrl,
       String postCategory,
       String review) {
-    if (review == 'Yes') {
-      // postList.add(posts);
-      // print(posts);
-      review = 'Reviewed';
-    } else {
-      review = 'Reviewing';
-    }
     return new Card(
       color: Colors.white,
       elevation: 10.0,
@@ -476,9 +475,15 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Container(
                   margin: EdgeInsets.all(3),
-                  child: GestureDetector(child: Icon(Icons.delete),onTap: (){
-                    
-                  },)),
+                  child: GestureDetector(
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                    onTap: () {
+                      dialogDeleteTrigger(context, key);
+                    },
+                  )),
             ],
           )),
     );

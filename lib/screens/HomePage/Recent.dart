@@ -92,7 +92,8 @@ class _RecentState extends State<Recent> {
       child: Scaffold(
         backgroundColor: Colors.blue[50],
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).tr('appBarTitle'),
+          title: Text(
+              AppLocalizations.of(context).tr('homePage.recentPage.titleBar'),
               style:
                   TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
           actions: <Widget>[
@@ -172,7 +173,8 @@ class _RecentState extends State<Recent> {
                               height: 4,
                             ),
                             Text(
-                              'No Posts in this category yet!',
+                              AppLocalizations.of(context)
+                                  .tr('homePage.recentPage.noPost'),
                               style: TextStyle(
                                   fontSize: 11,
                                   fontFamily: 'coiny',

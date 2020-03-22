@@ -1,10 +1,4 @@
 {
-    "loginHome": {
-        "main": {
-            "loginPageTitle": "සුහඳ මාරු"
-        }
-    },
-    "appBarTitle": "සුහඳ මාරු",
     "homePage": {
         "languageDialog": {
             "title": "භාෂාව තෝරගන්න"
@@ -12,7 +6,11 @@
         "navigateDrawer": {
             "language": "භාෂාව",
             "logout": "ඉවත් වන්න",
-            "profile": "මගේ පැතිකඩ"
+            "profile": "මගේ පැතිකඩ",
+            "logoutDialogTitle": "ඉවත් වන්න",
+            "logoutDialogSubtitle": "ඔබට විශ්වාසද?",
+            "dialogNo": "නැත",
+            "dialogYes": "ඔව්"
         },
         "categoryPage": {
             "categories": "කාණ්ඩ",
@@ -24,11 +22,122 @@
         "profilePage": {
             "mypost": "මගේ සටහන්",
             "name": "නම",
-            "email": "විද්යුත් තැපෑල",
-            "city": "නගරය"
+            "email": "විද්‍යුත් ලිපිනය",
+            "city": "නගරය",
+            "profile": "මගේ පැතිකඩ",
+            "noPost":"ඔබ තවම කිසිවක් පළ කර නැත!",
+            "loadProfile":"මගේ පැතිකඩ සකස් වෙමින් පවතී...",
+            "loadPost":"කරුණාකර රැඳී සිටින්න!ඔබගේ ලිපි සකස් වෙමින් පවතී!",
+            "deletePostTitle":"ඔබගේ ලිපිය ඉවත්කරන්න",
+            "deletePostSub":"ඔබට මේ පිලිබඳ විශ්වාසද?",
+            "deletePostYes":"Yes",
+            "deletePostNo":"No"
         },
         "addPostPage": {
-            "addPost": "සටහන් දැමීම"
+            "addPost": "සටහන් දැමීම",
+            "dialogTitle": "සුහඳ මාරු",
+            "dialogsubTitle": "ඔබගේ ලිපිය එකතු කරන ලදි",
+            "dialogButton": "හරි",
+            "dialogErrorSubTitle": "දෝෂයක් සිදු වී ඇත. කරුණාකර නැවත උත්සාහ කරන්න.",
+            "category": "කාණ්ඩය",
+            "postEnterTitle": "ඔබේ මාතෘකාව ඇතුළත් කරන්න",
+            "postTitle": "මාතෘකාව",
+            "postHintTitle": "ඔබේ මාතෘකාව ඇතුළත් කරන්න",
+            "postEnter": "ඔබගේ ලිපිය ඇතුළත් කරන්න",
+            "postDiscription": "විස්තර",
+            "postHintPost": "ඔබගේ ලිපිය ඇතුළත් කරන්න",
+            "postSubmit": "ඉදිරිපත් කරන්න"
+        },
+        "createProfilePage": {
+            "titleProfile": "පැතිකඩ සාදන්න",
+            "createProfile": "ඔබේ පැතිකඩ සාදන්න",
+            "Name": "ඔබේ නම ඇතුළත් කරන්න",
+            "labelName": "නම",
+            "hintName": "ඔබේ නම ඇතුළත් කරන්න",
+            "email": "ඔබේ විද්‍යුත් ලිපිනය ඇතුළත් කරන්න",
+            "labelEmail": "විද්‍යුත් ලිපිනය",
+            "hintEmail": "ඔබේ විද්‍යුත් ලිපිනය ඇතුළත් කරන්න",
+            "currentCity": "ඔබේ නගරය ඇතුළත් කරන්න",
+            "labelCity": "නගරය",
+            "hintCity": "ඔබේ නගරය ඇතුළත් කරන්න",
+            "profileSubmit": "ඉදිරිපත් කරන්න",
+            "profilePicture": "ඔබේ පැතිකඩ පින්තූරය තෝරන්න"
+        },
+        "recentPage": {
+            "titleBar": "සුහඳ මාරු",
+            "noPost": "මේ වන විට කිසිදු ලිපියක් නොමැත"
         }
+    },
+    "post": {
+        "postPage": {
+            "titleDoctor": "වෛද්‍යවරයා",
+            "titleTeacher": "ගුරුවරයා",
+            "titlePolice": "පොලිසිය",
+            "titleNurse": "හෙදිය",
+            "noPost": "මේ වන විට මෙම කාණ්ඩයේ ලිපි නොමැත!"
+        },
+        "commentPage": {
+            "titleComment": "ප්‍රතිචාර",
+            "enterComment": "ඔබේ ප්‍රතිචාර ඇතුළත් කරන්න",
+            "hintComment": "ඔබේ ප්‍රතිචාර ඇතුළත් කරන්න..",
+            "noComment": "මේ වන විට මෙම ලිපිය සදහා ප්‍රතිචාර දක්වා නොමැත!",
+            "addComment": "ඔබේ ප්‍රතිචාර එකතු කරන ලදි.",
+            "errorComment": "දෝෂයක්  සිදු වී ඇත. කරුණාකර නැවත උත්සාහ කරන්න."
+        },
+        "catAddPostPage": {
+            "titleBar": "ලිපි එකතු කිරීම",
+            "addEnterTitle": "ඔබේ මාතෘකාව ඇතුළත් කරන්න",
+            "addTitle": "මාතෘකාව",
+            "hintTitle": "ඔබේ මාතෘකාව ඇතුළත් කරන්න",
+            "addEnterPost": "ඔබගේ ලිපිය ඇතුළත් කරන්න",
+            "postDiscription": "විස්තර",
+            "postHint": "ඔබගේ ලිපිය ඇතුළත් කරන්න",
+            "postSubmit": "ඉදිරිපත් කරන්න",
+            "snackBarUploaded": "ඔබගේ ලිපිය එකතු කරන ලදි",
+            "snackBarError": "දෝෂයක් සිදු වී ඇත. කරුණාකර නැවත උත්සාහ කරන්න."
+        }
+    },
+    "login": {
+        "landingPage": {
+            "load": "සකස් වෙමින් පවතී..."
+        },
+        "loginPage": {
+            "titleBar": "ඇතුල් වීම",
+            "labelEmail": "විද්‍යුත් ලිපිනය",
+            "hintEmail": "විද්‍යුත් ලිපිනය",
+            "returnEmail": "ඔබගේ වලංගු විද්‍යුත් ලිපිනය ඇතුළත් කරන්න",
+            "labelPassword": "මුරපදය",
+            "hintPassword": "මුරපදය",
+            "returnPassword": "ඔබගේ මුරපදය ඇතුළත් කරන්න",
+            "loginButton": "ඇතුල් වන්න",
+            "loginGoogleButton": "Google ගිණුම මගින් ඇතුල් වන්න",
+            "loginWith": "හෝ ඔබට මේ සමග ඇතුල් විය හැකිය"
+        },
+        "loginHome": {
+            "loginPageTitle": "සුහඳ මාරු",
+            "alreadyAccount": "දැනටමත් ගිණුමක් ඇත",
+            "newAccount": "නව ගිණුමක් සාදන්න"
+        },
+        "signUp": {
+            "titleBar": "ලියාපදිංචි වීම",
+            "labelEmail": "විද්‍යුත් ලිපිනය",
+            "hintEmail": "විද්‍යුත් ලිපිනය",
+            "returnEmail": "ඔබගේ වලංගු විද්‍යුත් ලිපිනය ඇතුළත් කරන්න",
+            "labelPassword": "මුරපදය",
+            "hintPassword": "මුරපදය",
+            "returnPassword": "ඔබගේ මුරපදය ඇතුළත් කරන්න",
+            "signUpButton": "ලියාපදිංචි වන්න"
+        }
+    },
+    "IntroductionPage": {
+        "title1":"ඔබගේ ලිපි බෙදා ගන්න",
+        "body1":"ඔබේ සුහදමාරු ලිපි බෙදා ගැනීම!",
+        "title2":"දැනුම්දීම ලබා ගන්න",
+        "body2":"ලිපි පිළිබඳ දැනුම්දීමක් එම වෙලාවේදීම ලබා ගැනීම!",
+        "title3":"විසඳුම් ලබා ගන්න",
+        "body3":"ඔබේ ගැටලුවට විසඳුම ලබා ගන්න!",
+        "title4":"කණ්ඩායමක් වශයෙන් වැඩකිරීම",
+        "body4":"කණ්ඩායමක් ලෙස වැඩ කිරීමෙන් ජනතාවට විසඳුම් ලබා ගත හැකිය!",
+        "doneButton":"ඊළඟට"
     }
 }

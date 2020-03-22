@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -44,7 +45,6 @@ class LoginState extends State<Login> {
 
           for (var key in Data1) {
             if (key == uid) {
-              
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => HomePages()),
@@ -54,7 +54,6 @@ class LoginState extends State<Login> {
               print('homepage');
               break;
             } else {
-             
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => Profile()),
@@ -74,15 +73,13 @@ class LoginState extends State<Login> {
       print('error');
       print(onError.toString());
     });
-
-    
   }
 
-   checkFirebase(String email,String password) {
+  checkFirebase(String email, String password) {
     DatabaseReference database =
         FirebaseDatabase.instance.reference().child('Users');
 
-    signIn(email,password).then((user) {
+    signIn(email, password).then((user) {
       String uid = user.uid;
 
       if (uid == null) {
@@ -145,130 +142,142 @@ class LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    var data = EasyLocalizationProvider.of(context).data;
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Login',
-            style: TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.blue[300],
-      ),
-      body: ModalProgressHUD(
-        inAsyncCall: _isLoading,
-        child: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.all(5),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin:
-                        EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 5),
-                    child: Padding(
-                        padding: EdgeInsets.only(
-                            top: 15.0, bottom: 5.0, left: 5, right: 5),
-                        child: TextFormField(
-                          controller: _email,
-                          //style: textStyle,
-                          validator: validateEmail1,
-                          decoration: InputDecoration(
-                              labelText: 'Email',
-                              focusColor: Colors.blue,
-                              labelStyle: TextStyle(
-                                  fontSize: 18.0, color: Colors.black),
-                              prefixIcon: Icon(Icons.person),
-                              errorStyle: TextStyle(
-                                  color: Colors.redAccent, fontSize: 15.0),
-                              hintText: "Email",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              )),
-                        )),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    child: Padding(
-                        padding: EdgeInsets.only(
-                            top: 5.0, bottom: 5.0, left: 5, right: 5),
-                        child: TextFormField(
-                          controller: _password,
-                          obscureText: true,
-                          //style: textStyle,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Enter Your Password';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              labelText: 'Password',
-                              focusColor: Colors.blue,
-                              labelStyle: TextStyle(
-                                  fontSize: 18.0, color: Colors.black),
-                              prefixIcon: Icon(Icons.lock_outline),
-                              errorStyle: TextStyle(
-                                  color: Colors.redAccent, fontSize: 15.0),
-                              hintText: "Password",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              )),
-                        )),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10, right: 10, top: 5),
-                    width: double.infinity,
-                    child: MaterialButton(
+    return EasyLocalizationProvider(
+      data: data,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+              AppLocalizations.of(context).tr('login.loginPage.titleBar'),
+              style:
+                  TextStyle(fontFamily: 'coiny', fontWeight: FontWeight.bold)),
+        ),
+        body: ModalProgressHUD(
+          inAsyncCall: _isLoading,
+          child: SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: 10, left: 5, right: 5, bottom: 5),
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 8, bottom: 8, left: 10, right: 10),
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'coiny',
-                              color: Colors.white),
-                        ),
-                      ),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          checkFirebase(_email.text, _password.text);
-                        }
-                      },
-                      color: Colors.blue[300],
+                          padding: EdgeInsets.only(
+                              top: 15.0, bottom: 5.0, left: 5, right: 5),
+                          child: TextFormField(
+                            controller: _email,
+                            //style: textStyle,
+                            validator: validateEmail1,
+                            decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)
+                                    .tr('login.loginPage.labelEmail'),
+                                focusColor: Colors.blue,
+                                labelStyle: TextStyle(
+                                    fontSize: 18.0, color: Colors.black),
+                                prefixIcon: Icon(Icons.person),
+                                errorStyle: TextStyle(
+                                    color: Colors.redAccent, fontSize: 15.0),
+                                hintText: AppLocalizations.of(context)
+                                    .tr('login.loginPage.hintEmail'),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                )),
+                          )),
                     ),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
+                    Container(
+                      margin: EdgeInsets.all(5),
+                      child: Padding(
+                          padding: EdgeInsets.only(
+                              top: 5.0, bottom: 5.0, left: 5, right: 5),
+                          child: TextFormField(
+                            controller: _password,
+                            obscureText: true,
+                            //style: textStyle,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return AppLocalizations.of(context)
+                                    .tr('login.loginPage.returnPassword');
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)
+                                    .tr('login.loginPage.labelPassword'),
+                                focusColor: Colors.blue,
+                                labelStyle: TextStyle(
+                                    fontSize: 18.0, color: Colors.black),
+                                prefixIcon: Icon(Icons.lock_outline),
+                                errorStyle: TextStyle(
+                                    color: Colors.redAccent, fontSize: 15.0),
+                                hintText: AppLocalizations.of(context)
+                                    .tr('login.loginPage.hintPassword'),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                )),
+                          )),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10, right: 10, top: 5),
+                      width: double.infinity,
+                      child: MaterialButton(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8, bottom: 8, left: 10, right: 10),
                           child: Text(
-                        'Login With',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'coiny',
+                            AppLocalizations.of(context)
+                                .tr('login.loginPage.loginButton'),
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'coiny',
+                                color: Colors.white),
+                          ),
                         ),
-                      )),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            checkFirebase(_email.text, _password.text);
+                          }
+                        },
+                        color: Colors.blue[300],
+                      ),
                     ),
-                  ),
-                  // _facebookSignInButton(),
-                  // Container(
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(8.0),
-                  //     child: Center(
-                  //         child: Text(
-                  //       'OR',
-                  //       style: TextStyle(
-                  //           fontSize: 18, fontWeight: FontWeight.bold),
-                  //     )),
-                  //   ),
-                  // ),
-                  _signInButton()
-                ],
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                            child: Text(
+                          AppLocalizations.of(context)
+                              .tr('login.loginPage.loginWith'),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'coiny',
+                          ),
+                        )),
+                      ),
+                    ),
+                    // _facebookSignInButton(),
+                    // Container(
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(8.0),
+                    //     child: Center(
+                    //         child: Text(
+                    //       'OR',
+                    //       style: TextStyle(
+                    //           fontSize: 18, fontWeight: FontWeight.bold),
+                    //     )),
+                    //   ),
+                    // ),
+                    _signInButton()
+                  ],
+                ),
               ),
             ),
           ),
@@ -299,7 +308,8 @@ class LoginState extends State<Login> {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Sign in with Google',
+                AppLocalizations.of(context)
+                    .tr('login.loginPage.loginGoogleButton'),
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.grey,
@@ -363,7 +373,7 @@ class LoginState extends State<Login> {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value)) {
-      return 'Enter Your Valid Email';
+      return AppLocalizations.of(context).tr('login.loginPage.returnEmail');
     }
     return null;
   }

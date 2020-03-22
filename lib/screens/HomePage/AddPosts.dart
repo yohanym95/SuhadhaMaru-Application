@@ -26,7 +26,7 @@ class _AddPostState extends State<AddPost> {
   String userPhotoUrl = imageUrl;
   String userName = name;
 
-  var _currencies = ['Police', 'Teacher', 'University'];
+  var _currencies = ['Police', 'Teacher', 'Doctor', 'Nurse'];
   var currencyValue = 'Police';
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,8 @@ class _AddPostState extends State<AddPost> {
                           Expanded(
                               flex: 1,
                               child: Text(
-                                'Category',
+                                AppLocalizations.of(context)
+                                    .tr('homePage.addPostPage.category'),
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 15),
                               )),
@@ -94,17 +95,20 @@ class _AddPostState extends State<AddPost> {
                             //style: textStyle,
                             validator: (String Value) {
                               if (Value.isEmpty) {
-                                return 'Enter Your Title';
+                                return AppLocalizations.of(context)
+                                    .tr('homePage.addPostPage.postEnterTitle');
                               }
                               return null;
                             },
                             decoration: InputDecoration(
-                                labelText: 'Title',
+                                labelText: AppLocalizations.of(context)
+                                    .tr('homePage.addPostPage.postTitle'),
                                 labelStyle: TextStyle(
                                     fontSize: 18.0, color: Colors.black),
                                 errorStyle: TextStyle(
                                     color: Colors.redAccent, fontSize: 15.0),
-                                hintText: "Enter Your Title",
+                                hintText: AppLocalizations.of(context)
+                                    .tr('homePage.addPostPage.postHintTitle'),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(5.0))),
                           )),
@@ -120,7 +124,8 @@ class _AddPostState extends State<AddPost> {
                           controller: postController,
                           validator: (String value) {
                             if (value.isEmpty) {
-                              return 'Enter Your Post';
+                              return AppLocalizations.of(context)
+                                  .tr('homePage.addPostPage.postEnter');
                             }
                             return null;
                           },
@@ -129,8 +134,10 @@ class _AddPostState extends State<AddPost> {
                               labelStyle: TextStyle(
                                   fontSize: 18.0, color: Colors.black),
                               alignLabelWithHint: true,
-                              labelText: 'Post',
-                              hintText: 'Enter Your Post',
+                              labelText: AppLocalizations.of(context)
+                                  .tr('homePage.addPostPage.postDiscription'),
+                              hintText: AppLocalizations.of(context)
+                                  .tr('homePage.addPostPage.postHintPost'),
                               errorStyle: TextStyle(
                                   color: Colors.redAccent, fontSize: 15.0),
                               border: OutlineInputBorder(
@@ -146,7 +153,8 @@ class _AddPostState extends State<AddPost> {
                           padding: const EdgeInsets.only(
                               top: 8, bottom: 8, left: 10, right: 10),
                           child: Text(
-                            'Submit',
+                            AppLocalizations.of(context)
+                                .tr('homePage.addPostPage.postSubmit'),
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -199,31 +207,49 @@ class _AddPostState extends State<AddPost> {
       titleController.clear();
       postController.clear();
       showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: ListTile(
-              title: Text('Suhadha-Maru'),
-              subtitle: Text('Added Mutual Job Transfer Post'),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
+        context: context,
+        builder: (context) => AlertDialog(
+          content: ListTile(
+            title: Text(AppLocalizations.of(context)
+                .tr('homePage.addPostPage.dialogTitle')),
+            subtitle: Text(AppLocalizations.of(context)
+                .tr('homePage.addPostPage.dialogsubTitle')),
           ),
-        );
-      
+          actions: <Widget>[
+            FlatButton(
+              child: Text(AppLocalizations.of(context)
+                  .tr('homePage.addPostPage.dialogButton')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
+
       // Navigator.pop(context, true);
     }).catchError((onError) {
       setState(() {
         _isLoading = false;
       });
-      scaffold.showSnackBar(new SnackBar(
-        content: new Text("Some Error occured. Please Try Again"),
-      ));
       titleController.clear();
       postController.clear();
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: ListTile(
+            title: Text(AppLocalizations.of(context)
+                .tr('homePage.addPostPage.dialogTitle')),
+            subtitle: Text(AppLocalizations.of(context)
+                .tr('homePage.addPostPage.dialogErrorSubTitle')),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(AppLocalizations.of(context)
+                  .tr('homePage.addPostPage.dialogButton')),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      );
     });
   }
 

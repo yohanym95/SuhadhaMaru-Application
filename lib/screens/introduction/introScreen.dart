@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,41 +31,41 @@ class _IntroScreenState extends State<IntroScreen> {
   List<PageViewModel> getPages() {
     return [
       PageViewModel(
-        title: 'Sharing Your Posts',
+        title: AppLocalizations.of(context).tr('IntroductionPage.title1'),
         image: Image.asset("assests/introduction/share_article.png"),
-        body: 'Sharing Your Mutual Job Transfer Posts!',
+        body: AppLocalizations.of(context).tr('IntroductionPage.body1'),
         footer: Text(
-          'Suhadha - Maru',
+          AppLocalizations.of(context).tr('homePage.recentPage.titleBar'),
           style: TextStyle(color: Colors.black),
         ),
         decoration: pageDecoration,
       ),
       PageViewModel(
-        title: 'Get Notification',
+        title: AppLocalizations.of(context).tr('IntroductionPage.title2'),
         image: Image.asset("assests/introduction/get_notification.png"),
-        body: 'Get Notification about posts!',
+        body: AppLocalizations.of(context).tr('IntroductionPage.body2'),
         footer: Text(
-          'Suhadha - Maru',
+          AppLocalizations.of(context).tr('homePage.recentPage.titleBar'),
           style: TextStyle(color: Colors.black),
         ),
         decoration: pageDecoration,
       ),
       PageViewModel(
         image: Image.asset("assests/introduction/get_solutions.png"),
-        title: 'Get Solutions',
-        body: 'Get the solution for your problem!',
+        title: AppLocalizations.of(context).tr('IntroductionPage.title3'),
+        body: AppLocalizations.of(context).tr('IntroductionPage.body3'),
         footer: Text(
-          'Suhadha - Maru',
+          AppLocalizations.of(context).tr('homePage.recentPage.titleBar'),
           style: TextStyle(color: Colors.black),
         ),
         decoration: pageDecoration,
       ),
       PageViewModel(
         image: Image.asset("assests/introduction/team_solutions.png"),
-        title: 'Team Work',
-        body: 'People can get the solutions by work as team!',
+        title: AppLocalizations.of(context).tr('IntroductionPage.title4'),
+        body: AppLocalizations.of(context).tr('IntroductionPage.body4'),
         footer: Text(
-          'Suhadha - Maru',
+          AppLocalizations.of(context).tr('homePage.recentPage.titleBar'),
           style: TextStyle(color: Colors.black),
         ),
         decoration: pageDecoration,
@@ -74,27 +75,33 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: IntroductionScreen(
-        globalBackgroundColor: Colors.white,
-        pages: getPages(),
-        next: const Icon(Icons.navigate_next),
-        done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w600)),
-        onDone: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('install', "Yes");
-          setState(() {
-            //  sharedPrefHelper.addinstall();
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => MyHomePage()),
-              (Route<dynamic> route) => false,
-            );
-          });
-        },
-      ),
-    ));
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
+      data: data,
+      child: Scaffold(
+          body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: IntroductionScreen(
+          globalBackgroundColor: Colors.white,
+          pages: getPages(),
+          next: const Icon(Icons.navigate_next),
+          done: Text(
+              AppLocalizations.of(context).tr('IntroductionPage.doneButton'),
+              style: TextStyle(fontWeight: FontWeight.w600)),
+          onDone: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('install', "Yes");
+            setState(() {
+              //  sharedPrefHelper.addinstall();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => MyHomePage()),
+                (Route<dynamic> route) => false,
+              );
+            });
+          },
+        ),
+      )),
+    );
   }
 }

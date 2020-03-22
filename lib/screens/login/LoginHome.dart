@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text(
-                  AppLocalizations.of(context).tr('loginHome.main.loginPageTitle'),
+                  AppLocalizations.of(context).tr('login.loginHome.loginPageTitle'),
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w900,
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Alreay Have Account',
+                    AppLocalizations.of(context).tr('login.loginHome.alreadyAccount'),
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: const EdgeInsets.only(
                       top: 8, bottom: 8, left: 10, right: 10),
                   child: Text(
-                    'Create New Account',
+                    AppLocalizations.of(context).tr('login.loginHome.newAccount'),
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
