@@ -95,3 +95,34 @@ Future<bool> dialogDeleteTrigger(BuildContext context, pushKey) async {
         );
       });
 }
+
+Future<bool> dialogResetTrigger(BuildContext context) async {
+  var data = EasyLocalizationProvider.of(context).data;
+  return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return EasyLocalizationProvider(
+          data: data,
+          child: AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)
+                  .tr('homePage.profilePage.deletePostTitle'),
+              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+            ),
+            content: Text(AppLocalizations.of(context)
+                .tr('homePage.profilePage.deletePostSub')),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(AppLocalizations.of(context)
+                    .tr('homePage.profilePage.deletePostYes')),
+                textColor: Colors.blue,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      });
+}

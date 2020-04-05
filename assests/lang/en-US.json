@@ -8,6 +8,7 @@
             "language": "Language",
             "logout": "Logout",
             "profile": "My Profile",
+            "setting":"Setting",
             "logoutDialogTitle":"Logout",
             "logoutDialogSubtitle":"Are You Sure?",
             "dialogNo":"No",
