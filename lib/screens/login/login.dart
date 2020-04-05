@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -376,5 +377,8 @@ class LoginState extends State<Login> {
       return AppLocalizations.of(context).tr('login.loginPage.returnEmail');
     }
     return null;
+
+   
+       
   }
 }

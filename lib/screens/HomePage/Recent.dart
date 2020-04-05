@@ -8,6 +8,7 @@ import 'package:suhadhamaru/screens/Post/Comments.dart';
 import 'package:suhadhamaru/logic/auth.dart';
 import 'package:suhadhamaru/screens/Profile/Profile.dart';
 import 'package:suhadhamaru/screens/Profile/createProfile.dart';
+import 'package:suhadhamaru/screens/Setting/setting.dart';
 import 'package:suhadhamaru/utils/DialogTrigger.dart';
 import 'package:suhadhamaru/utils/PostUI.dart';
 import 'package:suhadhamaru/utils/ovalrightborderclipper.dart';
@@ -341,6 +342,20 @@ class _RecentState extends State<Recent> {
                             .tr('homePage.navigateDrawer.language')),
                     onTap: () {
                       _askLanguage(context);
+                    },
+                  ),
+                  buildDivider(),
+                  GestureDetector(
+                    child: buildRow(
+                        Icons.settings,
+                        AppLocalizations.of(context)
+                            .tr('homePage.navigateDrawer.setting')),
+                    onTap: () {
+                      // dialogTrigger(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SettingPage()),
+                      );
                     },
                   ),
                   buildDivider(),

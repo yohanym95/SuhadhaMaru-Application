@@ -282,7 +282,7 @@ class ProfileState extends State<Profile> {
                   // print(this.currencyValue);
                   print(_currencity.text);
 
-                  UserManagement().addData({
+                  UserManagement().createProfile({
                     'fullName': _firstname.text,
                     'email': _email.text,
                     'currentCity': _currencity.text,
